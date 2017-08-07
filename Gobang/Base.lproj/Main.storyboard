@@ -24,26 +24,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ri7-BK-t0o" customClass="BoardView" customModule="Gobang" customModuleProvider="target">
-                                <rect key="frame" x="9.5" y="155.5" width="356" height="356"/>
+                                <rect key="frame" x="4" y="150" width="367.5" height="367.5"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ri7-BK-t0o" secondAttribute="height" multiplier="1:1" id="OOc-tY-hlG"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="boardColor">
-                                        <color key="value" red="0.0" green="0.47843137250000001" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="value" red="1" green="0.80700941328115028" blue="0.34897740709906644" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="Wla-1j-z1H" appends="YES" id="qnT-XC-Iyf"/>
+                                    <outletCollection property="gestureRecognizers" destination="O64-X1-8zH" appends="YES" id="sqA-6P-eQK"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.95" priority="750" id="62T-6p-T8e"/>
+                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.98" priority="750" id="62T-6p-T8e"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PhV-9e-a2A"/>
-                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.95" id="dCQ-z0-7OA"/>
-                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.95" id="mOX-fu-Wo1"/>
+                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.98" id="dCQ-z0-7OA"/>
+                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.98" id="mOX-fu-Wo1"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vol-Vg-1v7"/>
-                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.95" priority="750" id="zdM-0U-XYd"/>
+                            <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.98" priority="750" id="zdM-0U-XYd"/>
                         </constraints>
                     </view>
                     <connections>
@@ -51,6 +56,16 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Wla-1j-z1H">
+                    <connections>
+                        <action selector="handleTap:" destination="BYZ-38-t0r" id="8ys-NB-4Ek"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="O64-X1-8zH">
+                    <connections>
+                        <action selector="handlePan:" destination="BYZ-38-t0r" id="u5s-cd-7Xu"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
         </scene>
     </scenes>
