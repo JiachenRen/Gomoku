@@ -13,6 +13,8 @@
 		3299B4231F385D78009AEF55 /* Gobang.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4211F385D78009AEF55 /* Gobang.xcdatamodeld */; };
 		3299B4251F385D78009AEF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3299B4241F385D78009AEF55 /* Assets.xcassets */; };
 		3299B4281F385D78009AEF55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3299B4261F385D78009AEF55 /* LaunchScreen.storyboard */; };
+		3299B4311F385EAA009AEF55 /* Vec2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B42F1F385EAA009AEF55 /* Vec2D.swift */; };
+		3299B4321F385EAA009AEF55 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4301F385EAA009AEF55 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		3299B4241F385D78009AEF55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3299B4271F385D78009AEF55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3299B4291F385D78009AEF55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3299B42F1F385EAA009AEF55 /* Vec2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vec2D.swift; sourceTree = "<group>"; };
+		3299B4301F385EAA009AEF55 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +60,7 @@
 		3299B4191F385D78009AEF55 /* Gobang */ = {
 			isa = PBXGroup;
 			children = (
+				3299B4331F385EBC009AEF55 /* Utils */,
 				3299B41A1F385D78009AEF55 /* AppDelegate.swift */,
 				3299B41C1F385D78009AEF55 /* ViewController.swift */,
 				3299B41E1F385D78009AEF55 /* Main.storyboard */,
@@ -65,6 +70,15 @@
 				3299B4211F385D78009AEF55 /* Gobang.xcdatamodeld */,
 			);
 			path = Gobang;
+			sourceTree = "<group>";
+		};
+		3299B4331F385EBC009AEF55 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3299B42F1F385EAA009AEF55 /* Vec2D.swift */,
+				3299B4301F385EAA009AEF55 /* Utils.swift */,
+			);
+			name = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,8 +154,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3299B4321F385EAA009AEF55 /* Utils.swift in Sources */,
 				3299B41D1F385D78009AEF55 /* ViewController.swift in Sources */,
 				3299B41B1F385D78009AEF55 /* AppDelegate.swift in Sources */,
+				3299B4311F385EAA009AEF55 /* Vec2D.swift in Sources */,
 				3299B4231F385D78009AEF55 /* Gobang.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
