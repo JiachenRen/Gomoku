@@ -8,19 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		3299B41B1F385D78009AEF55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B41A1F385D78009AEF55 /* AppDelegate.swift */; };
-		3299B41D1F385D78009AEF55 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B41C1F385D78009AEF55 /* ViewController.swift */; };
+		3299B41D1F385D78009AEF55 /* BoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B41C1F385D78009AEF55 /* BoardViewController.swift */; };
 		3299B4201F385D78009AEF55 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3299B41E1F385D78009AEF55 /* Main.storyboard */; };
 		3299B4231F385D78009AEF55 /* Gobang.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4211F385D78009AEF55 /* Gobang.xcdatamodeld */; };
 		3299B4251F385D78009AEF55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3299B4241F385D78009AEF55 /* Assets.xcassets */; };
 		3299B4281F385D78009AEF55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3299B4261F385D78009AEF55 /* LaunchScreen.storyboard */; };
 		3299B4311F385EAA009AEF55 /* Vec2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B42F1F385EAA009AEF55 /* Vec2D.swift */; };
 		3299B4321F385EAA009AEF55 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4301F385EAA009AEF55 /* Utils.swift */; };
+		3299B4351F385F8D009AEF55 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4341F385F8D009AEF55 /* BoardView.swift */; };
+		3299B4371F3861F5009AEF55 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3299B4361F3861F5009AEF55 /* Board.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3299B4171F385D78009AEF55 /* Gobang.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gobang.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3299B41A1F385D78009AEF55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3299B41C1F385D78009AEF55 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3299B41C1F385D78009AEF55 /* BoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewController.swift; sourceTree = "<group>"; };
 		3299B41F1F385D78009AEF55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3299B4221F385D78009AEF55 /* Gobang.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Gobang.xcdatamodel; sourceTree = "<group>"; };
 		3299B4241F385D78009AEF55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -28,6 +30,8 @@
 		3299B4291F385D78009AEF55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3299B42F1F385EAA009AEF55 /* Vec2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vec2D.swift; sourceTree = "<group>"; };
 		3299B4301F385EAA009AEF55 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		3299B4341F385F8D009AEF55 /* BoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
+		3299B4361F3861F5009AEF55 /* Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +66,14 @@
 			children = (
 				3299B4331F385EBC009AEF55 /* Utils */,
 				3299B41A1F385D78009AEF55 /* AppDelegate.swift */,
-				3299B41C1F385D78009AEF55 /* ViewController.swift */,
+				3299B41C1F385D78009AEF55 /* BoardViewController.swift */,
 				3299B41E1F385D78009AEF55 /* Main.storyboard */,
 				3299B4241F385D78009AEF55 /* Assets.xcassets */,
 				3299B4261F385D78009AEF55 /* LaunchScreen.storyboard */,
 				3299B4291F385D78009AEF55 /* Info.plist */,
 				3299B4211F385D78009AEF55 /* Gobang.xcdatamodeld */,
+				3299B4341F385F8D009AEF55 /* BoardView.swift */,
+				3299B4361F3861F5009AEF55 /* Board.swift */,
 			);
 			path = Gobang;
 			sourceTree = "<group>";
@@ -155,8 +161,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				3299B4321F385EAA009AEF55 /* Utils.swift in Sources */,
-				3299B41D1F385D78009AEF55 /* ViewController.swift in Sources */,
+				3299B41D1F385D78009AEF55 /* BoardViewController.swift in Sources */,
 				3299B41B1F385D78009AEF55 /* AppDelegate.swift in Sources */,
+				3299B4351F385F8D009AEF55 /* BoardView.swift in Sources */,
+				3299B4371F3861F5009AEF55 /* Board.swift in Sources */,
 				3299B4311F385EAA009AEF55 /* Vec2D.swift in Sources */,
 				3299B4231F385D78009AEF55 /* Gobang.xcdatamodeld in Sources */,
 			);
