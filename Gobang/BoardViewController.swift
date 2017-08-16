@@ -10,6 +10,8 @@ import UIKit
 
 class BoardViewController: UIViewController, BoardDelegate {
     
+    
+    
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         let pos = sender.location(in: self.boardView)
         let coordinate = self.boardView.onBoard(pos)
@@ -44,6 +46,9 @@ class BoardViewController: UIViewController, BoardDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         board.delegate = self
+        // Assign an artificial intelligence to the current board.
+        board.intelligence = Intelligence(color: .black)
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
 

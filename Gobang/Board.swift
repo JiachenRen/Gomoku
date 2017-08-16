@@ -16,6 +16,14 @@ public class Board: BoardProtocol {
             delegate?.boardDidUpdate()
         }
     }
+    var intelligence: Intelligence? {
+        didSet {
+            //give the AI the chance to make a move if it needs to move first.
+            if let intel = intelligence, intel.color == self.turn {
+                intel.makeMove()
+            }
+        }
+    }
     var delegate: BoardDelegate?
     var pieces: [[Piece?]]!
     var blackFirst: Bool = true
@@ -43,8 +51,17 @@ public class Board: BoardProtocol {
             pieces[coordinate.row][coordinate.col] = turn
             self.turn = turn.next()
             delegate?.boardDidUpdate()
+            
+            // give the AI the chance to make a move, if one exists.
+            if let intel = intelligence, intel.color == self.turn {
+                intel.makeMove()
+            }
             return
         }
+    }
+    
+    public func get(_ co: Coordinate) -> Piece? {
+        return pieces[co.row][co.col]
     }
 
 }

@@ -25,7 +25,7 @@ public typealias Coordinate = (col: Int, row: Int)
     
     //this should only apply when using standard board
     static var vertices: [Coordinate] = {
-       return [(4, 4), (14, 4), (4, 14), (14, 14), (9, 9), (9, 14), (14, 9), (9, 4), (4, 9)]
+       return [(3, 3), (15, 3), (3, 15), (15, 15), (9, 9), (9, 15), (15, 9), (9, 3), (3, 9)]
     }()
     
     var dummyPiece: (Piece, CGPoint)? {
