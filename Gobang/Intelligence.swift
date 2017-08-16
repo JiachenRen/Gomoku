@@ -15,200 +15,6 @@ class Intelligence {
         return Board.sharedInstance
     }
     
-    lazy var patterns: [Pattern] = {
-        var patterns = [Pattern]()
-        patterns.append(Pattern(
-            name: "freeFour",
-            configs: [(
-                pieces: [.empty, .same, .same, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4), (-5, -5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0)]
-                )],
-            weight: 12
-        ))
-        patterns.append(Pattern(
-            name: "five",
-            configs: [(
-                pieces: [.same, .same, .same, .same, .same],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
-                ), (
-                    pieces: [.same, .same, .same, .same, .same],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4)]
-                ), (
-                    pieces: [.same, .same, .same, .same, .same],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)]
-                ), (
-                    pieces: [.same, .same, .same, .same, .same],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
-                )],
-            weight: 99
-        ))
-        patterns.append(Pattern(
-            name: "freeThree",
-            configs: [(
-                pieces: [.empty, .same, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
-                )],
-            weight: 11
-        ))
-        patterns.append(Pattern(
-            name: "blockedFour",
-            configs: [(
-                pieces: [.opposite, .same, .same, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4), (-5, -5)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0)]
-                ),(
-                    pieces: [.empty, .same, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4), (-5, -5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (0, 5)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0)]
-                )],
-            weight: 8
-        ))
-        patterns.append(Pattern(
-            name: "blockedThree",
-            configs: [(
-                pieces: [.opposite, .same, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)]
-                ), (
-                    pieces: [.opposite, .same, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
-                ),(
-                    pieces: [.empty, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 1), (2, 2), (3, 3), (4, 4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3), (-4, -4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4)]
-                ), (
-                    pieces: [.empty, .same, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0)]
-                )],
-            weight: 6
-        ))
-        patterns.append(Pattern(
-            name: "freeTwo",
-            configs: [(
-                pieces: [.empty, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3)]
-                ), (
-                    pieces: [.empty, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3)]
-                ), (
-                    pieces: [.empty, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3)]
-                ), (
-                    pieces: [.empty, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0)]
-                )],
-            weight: 2
-        ))
-        patterns.append(Pattern(
-            name: "blockedTwo",
-            configs: [(
-                pieces: [.opposite, .same, .same, .empty],
-                coordinates: [(0, 0), (1, 1), (2, 2), (3, 3)]
-                ), (
-                    pieces: [.opposite, .same, .same, .empty],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3)]
-                ), (
-                    pieces: [.opposite, .same, .same, .empty],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3)]
-                ), (
-                    pieces: [.opposite, .same, .same, .empty],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0)]
-                ),(
-                    pieces: [.empty, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 1), (2, 2), (3, 3)]
-                ), (
-                    pieces: [.empty, .same, .same, .opposite],
-                    coordinates: [(0, 0), (-1, -1), (-2, -2), (-3, -3)]
-                ), (
-                    pieces: [.empty, .same, .same, .opposite],
-                    coordinates: [(0, 0), (0, 1), (0, 2), (0, 3)]
-                ), (
-                    pieces: [.empty, .same, .same, .opposite],
-                    coordinates: [(0, 0), (1, 0), (2, 0), (3, 0)]
-                )],
-            weight: 1
-        ))
-        return patterns
-    }()
-    
-    struct Pattern {
-        let name: String
-        let configs: [(pieces: [Config], coordinates: [Coordinate])]
-        var weight: Double
-        
-        public func numMatches(_ target: Intelligence,_ pieces: inout [[Piece?]], _ coordinate: Coordinate) -> Int {
-            return configs.reduce(0) { (num, config) in
-                let maxCo = config.coordinates[config.pieces.count - 1] + coordinate
-                if maxCo.row >= pieces.count
-                    || maxCo.row < 0
-                    || maxCo.col >= pieces.count
-                    || maxCo.col < 0 {
-                    return num
-                }
-                for i in 0..<config.pieces.count {
-                    let co = config.coordinates[i] + coordinate
-                    let piece = pieces[co.row][co.col]
-                    switch config.pieces[i] {
-                    case .empty: if piece != nil {return num}
-                    case .all: if piece == nil {return num}
-                    case .same: if piece == nil
-                        || piece != target.color {
-                        return num
-                        }
-                    case .opposite: if piece == nil
-                        || piece == target.color {
-                        return num
-                        }
-                    }
-                }
-                return num + 1
-            }
-        }
-    }
     
 //    //seg stands for segmented
 //    struct Weights {
@@ -219,9 +25,10 @@ class Intelligence {
 //    }
 
     
+    
     enum Config {
         case empty
-        case all
+        case end
         case same
         case opposite
     }
@@ -232,19 +39,150 @@ class Intelligence {
     
     private func linearEval( pieces: inout [[Piece?]]) -> Double {
         var score: Double = 0.0
-        for row in 0..<pieces.count {
-            for col in 0..<pieces[row].count {
-                patterns.forEach {pattern in
-                    let num = pattern.numMatches(self, &pieces, (col, row))
-                    score += Double(num) * pattern.weight
+        func resolveConfig(_ piece: Piece?, _ configs: inout [Config]) {
+            if let p = piece {
+                configs.append(p == self.color ? .same: .opposite)
+            } else {
+                configs.append(.empty)
+            }
+        }
+
+        func interpretConfigs(_ configs: [Config]..., score: inout Double) {
+            func evaluate(_ group: [Config], _ numInvalid: Int) -> (hole: Int, same: Int, noPotential: Bool) {
+                var hole: Int = 0, same: Int = 0, noPotential = false
+                var acc = 0
+                loop: for i in 1..<group.count {
+                    switch group[i] {
+                    case .empty: acc += 1
+                    case .same:
+                        same += 1
+                        hole += acc
+                        acc = 0
+                    case .end, .opposite:
+                        if i <= numInvalid {
+                            noPotential = true
+                        }
+                        break loop
+                    }
+                }
+                return (hole, same, noPotential)
+            }
+            configs.forEach {group in
+                if group.count > 0 {
+                    switch group[0] {
+                    case .empty:
+                        let (hole, same, noPotential) = evaluate(group, 0)
+                        if same > 1 {
+                            var base = pow(10, Double(same))
+                            if !noPotential {
+                                if hole > 0 {
+                                    base = pow(base, 1 / (Double(hole) + 2))
+                                }
+                                score += base
+                            }
+                        }
+                    case .end, .opposite:
+                        let (hole, same, noPotential) = evaluate(group, 0)
+                        if same > 1 {
+                            var base = pow(9, Double(same))
+                            if !noPotential {
+                                if hole > 0 {
+                                    base = pow(base, 1 / (Double(hole) + 2))
+                                }
+                                score += base
+                            }
+                        }
+                    default: break
+                    }
                 }
             }
         }
+
+        for row in 0..<pieces.count {
+            for col in 0..<pieces[row].count {
+                if pieces[row][col] != self.color{
+                    continue
+                }
+                
+                let range = 0...5
+                var hor = [Config](), ver = [Config](), diag_up = [Config](), diag_down = [Config]()
+                
+                // horizontal
+                if col - 1 < 0 {
+                    hor.append(.end)
+                }
+                if hor.count > 0 || pieces[row][col - 1] != self.color {
+                    if hor.count == 0 {
+                        resolveConfig(pieces[row][col - 1], &hor)
+                    }
+                    for i in range.map({$0+col}) {
+                        if i >= pieces.count {
+                            hor.append(.end)
+                            break
+                        }
+                        resolveConfig(pieces[row][i], &hor)
+                    }
+                }
+                
+                // vertical
+                if row - 1 < 0 {
+                    ver.append(.end)
+                }
+                if ver.count > 0 || pieces[row - 1][col] != self.color {
+                    if ver.count == 0 {
+                        resolveConfig(pieces[row - 1][col], &ver)
+                    }
+                    for i in range.map({$0+row}) {
+                        if i >= pieces.count {
+                            ver.append(.end)
+                            break
+                        }
+                        resolveConfig(pieces[i][col], &ver)
+                    }
+                }
+                
+                // diagnal up
+                if row - 1 < 0 || col - 1 < 0 {
+                    diag_up.append(.end)
+                }
+                if diag_up.count > 0 || pieces[row - 1][col - 1] != self.color {
+                    if diag_up.count == 0 {
+                        resolveConfig(pieces[row - 1][col - 1], &diag_up)
+                    }
+                    for (c, r) in range.map({($0+col, $0+row)}) {
+                        if c >= pieces.count || r >= pieces.count {
+                            diag_up.append(.end)
+                            break
+                        }
+                        resolveConfig(pieces[r][c], &diag_up)
+                    }
+                }
+                
+                // diagnal down
+                if row - 1 < 0 || col + 1 >= pieces.count {
+                    diag_down.append(.end)
+                }
+                if diag_down.count > 0 || pieces[row - 1][col + 1] != self.color {
+                    if diag_down.count == 0 {
+                        resolveConfig(pieces[row - 1][col + 1], &diag_down)
+                    }
+                    for (c, r) in range.map({(col-$0, $0+row)}) {
+                        if c < 0 || r >= pieces.count {
+                            diag_down.append(.end)
+                            break
+                        }
+                        resolveConfig(pieces[r][c], &diag_down)
+                    }
+                }
+                interpretConfigs(hor, ver, diag_up, diag_down, score: &score)
+            }
+        }
+        
         return score
     }
     
     public func makeMove() {
-        var maxScore: Double = 0.0, co: Coordinate?, pieces = board.pieces!
+        var maxScore: Double = -Double.infinity, co: Coordinate?, pieces = board.pieces!
         for row in 0..<board.pieces.count {
             for col in 0..<board.pieces[row].count {
                 if board.pieces[row][col] != nil {
@@ -252,11 +190,14 @@ class Intelligence {
                 }
                 pieces[row][col] = self.color
                 let score = linearEval(pieces: &pieces)
+                
                 if score > maxScore {
                     maxScore = score
                     co = (col: col, row: row)
                 }
+                
                 pieces[row][col] = nil
+                
             }
         }
         if maxScore != 0.0 && co != nil {
