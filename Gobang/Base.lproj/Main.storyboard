@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -20,11 +20,11 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ri7-BK-t0o" customClass="BoardView" customModule="Gobang" customModuleProvider="target">
-                                <rect key="frame" x="4" y="150" width="367.5" height="367.5"/>
+                                <rect key="frame" x="165" y="4" width="406" height="406"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -40,16 +40,55 @@
                                     <outletCollection property="gestureRecognizers" destination="O64-X1-8zH" appends="YES" id="sqA-6P-eQK"/>
                                 </connections>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jqF-OT-GoG">
+                                <rect key="frame" x="698" y="20" width="30" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="↩︎">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="revertButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jfn-5b-2no"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gyN-It-mFV">
+                                <rect key="frame" x="8" y="23.333333333333329" width="30" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="➔"/>
+                                <connections>
+                                    <action selector="restoreButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="L9E-fr-e69"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.98" priority="750" id="62T-6p-T8e"/>
+                            <constraint firstItem="gyN-It-mFV" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="8" id="6Lh-hj-pLO"/>
+                            <constraint firstItem="gyN-It-mFV" firstAttribute="baseline" secondItem="jqF-OT-GoG" secondAttribute="baseline" id="8L4-oM-2qr"/>
+                            <constraint firstItem="jqF-OT-GoG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="J9w-Uc-uAB"/>
+                            <constraint firstItem="jqF-OT-GoG" firstAttribute="trailing" secondItem="Ri7-BK-t0o" secondAttribute="trailing" id="Joq-36-j55"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="PhV-9e-a2A"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="height" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.98" id="dCQ-z0-7OA"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" relation="lessThanOrEqual" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.98" id="mOX-fu-Wo1"/>
+                            <constraint firstAttribute="trailing" secondItem="jqF-OT-GoG" secondAttribute="trailing" constant="8" id="pD1-Ym-ttQ"/>
+                            <constraint firstItem="gyN-It-mFV" firstAttribute="leading" secondItem="Ri7-BK-t0o" secondAttribute="leading" id="rII-kp-eR6"/>
+                            <constraint firstItem="jqF-OT-GoG" firstAttribute="height" secondItem="gyN-It-mFV" secondAttribute="height" id="tIe-9x-93N"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vol-Vg-1v7"/>
                             <constraint firstItem="Ri7-BK-t0o" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.98" priority="750" id="zdM-0U-XYd"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="6Lh-hj-pLO"/>
+                                <exclude reference="pD1-Ym-ttQ"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="constraints">
+                                <include reference="6Lh-hj-pLO"/>
+                                <exclude reference="rII-kp-eR6"/>
+                                <exclude reference="Joq-36-j55"/>
+                                <include reference="pD1-Ym-ttQ"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="boardView" destination="Ri7-BK-t0o" id="Vrg-Hb-cfC"/>

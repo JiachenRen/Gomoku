@@ -10,7 +10,12 @@ import UIKit
 
 class BoardViewController: UIViewController, BoardDelegate {
     
-    
+    @IBAction func revertButtonPressed(_ sender: UIButton) {
+        board.revert()
+    }
+    @IBAction func restoreButtonPressed(_ sender: UIButton) {
+        board.restore()
+    }
     
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         let pos = sender.location(in: self.boardView)
