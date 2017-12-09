@@ -9,7 +9,28 @@
 import Foundation
 import UIKit
 
-public class Board: BoardProtocol {
+public class Board: BoardProtocol, CustomStringConvertible {
+    public var description: String {
+        get {
+            var str = ""
+            self.pieces.forEach { row in
+                row.forEach {col in
+                    switch col {
+                    case .none: str += "- "
+                    case .some(let color):
+                        switch color {
+                        case .black: str += "* "
+                        case .white: str += "o "
+                        }
+                    }
+                }
+                str += "\n"
+            }
+            
+            return str
+        }
+    }
+    
     var dimension: Int {
         didSet {
             self.initPieces()
@@ -28,8 +49,8 @@ public class Board: BoardProtocol {
     var pieces: [[Piece?]]!
     var blackFirst: Bool = true
     var turn: Piece
-    var searchBreadth = 10
-    var searchDepth = 3
+    var searchBreadth = 3
+    var searchDepth = 0
     var lastMoves = [Coordinate]()
     var reverted = [Coordinate]()
     
@@ -50,6 +71,7 @@ public class Board: BoardProtocol {
         initPieces()
     }
     
+    //with Intelligence
     public func put(_ coordinate: Coordinate) {
         guard let _ = pieces[coordinate.row][coordinate.col] else {
             pieces[coordinate.row][coordinate.col] = turn
@@ -65,13 +87,23 @@ public class Board: BoardProtocol {
         }
     }
     
-    public func revert() {
+    //for Intelligence
+    public func place(_ coordinate: Coordinate) {
+        guard let _ = pieces[coordinate.row][coordinate.col] else {
+            pieces[coordinate.row][coordinate.col] = turn
+            lastMoves.append(coordinate)
+            self.turn = turn.next()
+            return
+        }
+    }
+    
+    public func revert(notify: Bool) {
         if lastMoves.count == 0 {return}
         self.turn = self.turn.next()
         let co = lastMoves.removeLast()
         reverted.append(co)
         pieces[co.row][co.col] = nil
-        delegate?.boardDidUpdate()
+        if notify {delegate?.boardDidUpdate()}
     }
     
     public func restore() {
@@ -79,6 +111,10 @@ public class Board: BoardProtocol {
         let co = reverted.removeLast()
         put(co)
         delegate?.boardDidUpdate()
+    }
+    
+    public func clearReverted() {
+        reverted.removeAll()
     }
     
     public func get(_ co: Coordinate) -> Piece? {

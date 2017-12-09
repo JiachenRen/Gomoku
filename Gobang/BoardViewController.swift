@@ -11,7 +11,7 @@ import UIKit
 class BoardViewController: UIViewController, BoardDelegate {
     
     @IBAction func revertButtonPressed(_ sender: UIButton) {
-        board.revert()
+        board.revert(notify: true)
     }
     @IBAction func restoreButtonPressed(_ sender: UIButton) {
         board.restore()
@@ -34,6 +34,7 @@ class BoardViewController: UIViewController, BoardDelegate {
         switch sender.state {
         case .ended where isOnBoard(pos):
             board.put(boardView.onBoard(pos))
+            print(board)
             fallthrough
         case .ended: boardView.dummyPiece = nil
         default: break
