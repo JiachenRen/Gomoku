@@ -76,7 +76,7 @@ class Intelligence {
         }  else {
             //extrapolate best move
             board.aiStatus = "extrapolating best move..."
-            let _ = self.minimax(self.depth, maximizingPlayer: true, alpha: 0, beta: 0)
+            let _ = self.minimax(self.depth, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
             if bestMove == nil {
                 board.aiStatus = "You won. I quit!"
                 return
@@ -162,7 +162,8 @@ class Intelligence {
 //                        let curMillis = NSDate() //debug
                         board.place(co)
 //                        print(NSDate().timeIntervalSince(curMillis as Date)) //debug
-                        let value = minimax(d - 1, maximizingPlayer: false, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
+                        let value = minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta)
+                        alpha = max(alpha, bestMove!.score)
                         
                         if value > bestMove!.score {
                             bestMove = Move(score: value, co)
