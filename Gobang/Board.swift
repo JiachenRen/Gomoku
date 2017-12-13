@@ -267,13 +267,10 @@ public class Board: BoardProtocol, CustomStringConvertible {
     }
     
     public func revert(notify: Bool) {
-        if notify {
-            self.locked = false
-        }
         if lastMoves.count == 0 {return}
         self.turn = self.turn.next()
+        
         let co = lastMoves.removeLast()
-        reverted.append(co)
         pieces[co.row][co.col] = nil
         
         //restore changes made to the coordinates map
@@ -281,8 +278,12 @@ public class Board: BoardProtocol, CustomStringConvertible {
             availableCos[co.row][co.col] = !availableCos[co.row][co.col]
         }
         
-        clearBoardStatus()
-        if notify {delegate?.boardDidUpdate()}
+        if notify {
+            delegate?.boardDidUpdate()
+            clearBoardStatus()
+            reverted.append(co)
+            self.locked = false
+        }
     }
     
     public func clearBoardStatus() {

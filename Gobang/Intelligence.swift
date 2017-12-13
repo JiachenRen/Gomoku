@@ -138,7 +138,10 @@ class Intelligence {
 //    14             bestValue := min(bestValue, v)
 //    15         return bestValue
     func minimax(_ d: Int, maximizingPlayer: Bool, alpha: Int, beta: Int) -> Int {
+//        let curMillis = NSDate() //debug
+        var alpha = alpha, beta = beta
         let selfScore = self.linearEval(), opponentScore = opponent.linearEval()
+//        print(NSDate().timeIntervalSince(curMillis as Date)) //debug
         if selfScore >= TERMINAL_MAX && !maximizingPlayer {
             return TERMINAL_MAX
         } else if opponentScore >= TERMINAL_MAX && maximizingPlayer {
@@ -156,7 +159,9 @@ class Intelligence {
                         if self.bestMove == nil {
                             bestMove = Move(score: -TERMINAL_MAX * 10, co)
                         }
+//                        let curMillis = NSDate() //debug
                         board.place(co)
+//                        print(NSDate().timeIntervalSince(curMillis as Date)) //debug
                         let value = minimax(d - 1, maximizingPlayer: false, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
                         
                         if value > bestMove!.score {
@@ -167,7 +172,9 @@ class Intelligence {
                             board.revert(notify: false)
                             return TERMINAL_MAX
                         }
+//                        let curMillis = NSDate() //debug
                         board.revert(notify: false)
+//                        print(NSDate().timeIntervalSince(curMillis as Date))
                     }
                 }
             }
@@ -175,42 +182,47 @@ class Intelligence {
         }
         
         if maximizingPlayer {
-            var bestValue = -TERMINAL_MAX * 10, a = alpha
+//            print("max \(d)")
+            var bestValue = -TERMINAL_MAX * 10
             for row in 0..<(board.dimension - 1) {
                 for col in 0..<(board.dimension - 1) {
                     if board.availableCos[row][col] {
                         let co = Coordinate(col: col, row: row)
                         board.place(co)
                         bestValue = max(bestValue, minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta))
-                        a = max(a, bestValue)
+                        alpha = max(alpha, bestValue)
                         if bestValue >= TERMINAL_MAX {
                             board.revert(notify: false)
                             return TERMINAL_MAX
                         }
                         board.revert(notify: false)
                         if beta <= alpha {
-                            return bestValue
+                            print("alpha cut at depth \(d)")
+                            return alpha
                         }
                     }
                 }
             }
             return bestValue
         } else {
-            var bestValue = TERMINAL_MAX * 10, b = beta
+//            print("min \(d)")
+            var bestValue = TERMINAL_MAX * 10
             for row in 0..<(board.dimension - 1) {
                 for col in 0..<(board.dimension - 1) {
                     if board.availableCos[row][col] {
                         let co = Coordinate(col: col, row: row)
                         board.place(co)
-                        bestValue = min(bestValue, minimax(d - 1, maximizingPlayer: true, alpha: alpha, beta: beta))
-                        b = min(b, bestValue)
+                        let value = minimax(d - 1, maximizingPlayer: true, alpha: alpha, beta: beta)
+                        bestValue = min(bestValue, value)
+                        beta = min(beta, bestValue)
                         if bestValue <= -TERMINAL_MAX {
                             board.revert(notify: false)
                             return -TERMINAL_MAX
                         }
                         board.revert(notify: false)
                         if beta <= alpha {
-                            return bestValue
+                            print("beta cut at depth \(d)")
+                            return beta
                         }
                     }
                 }
@@ -384,6 +396,7 @@ class Intelligence {
                     }
                     
                     var gaps = 0, gapsBuff = 0, same = 1, rightBlocked = false, i = 1
+//                    let curMillis = NSDate() //debug
                     while(i <= 5) {
                         let nextCo = Coordinate(col: col + i, row: row)
                         if board.isValid(co: nextCo) {
@@ -405,6 +418,7 @@ class Intelligence {
                         }
                         i += 1
                     }
+//                    print(NSDate().timeIntervalSince(curMillis as Date))
                     if gaps <= 1 {
                         if same != 5 {col += i - 1}
                         interpret(leftBlocked, rightBlocked, i, same, gaps)
