@@ -63,6 +63,8 @@ public typealias Coordinate = (col: Int, row: Int)
         return UIGraphicsGetCurrentContext()!
     }
     
+    var highlightedCoordinates: [Coordinate]?
+    
     override func draw(_ rect: CGRect) {
         //draws the background for the board
         boardColor.setFill()
@@ -80,8 +82,21 @@ public typealias Coordinate = (col: Int, row: Int)
         //draw pieces
         drawPieces()
         
+        //highlight selected pieces
+        highlightPieces()
+        
         //draw dummy piece to help place the piece
         drawDummyPiece()
+    }
+    
+    private func highlightPieces() {
+        if let coordinates = self.highlightedCoordinates {
+            coordinates.forEach { co in
+                UIColor.green.withAlphaComponent(1).setStroke()
+                context.setLineWidth(3)
+                context.strokeEllipse(in: CGRect(center: onScreen(co), size: CGSize(width: pieceRadius * 2, height: pieceRadius * 2)))
+            }
+        }
     }
     
     private func drawDummyPiece() {
