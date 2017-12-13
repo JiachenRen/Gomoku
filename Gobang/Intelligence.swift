@@ -15,7 +15,6 @@ class Intelligence {
         return Board.sharedInstance
     }
     typealias Move = (score: Int, co: Coordinate)
-    let breadth: Int
     let depth: Int
     
     static let terminalMax = 100000
@@ -47,21 +46,21 @@ class Intelligence {
     
     var opponent: Intelligence!
     
-    required init(color: Piece, breadth: Int, depth: Int) {
+    required init(color: Piece, depth: Int) {
         self.color = color
-        self.breadth = breadth
         self.depth = depth
     }
     
     private func initOpponent() {
-        opponent = Intelligence(color: self.color.next(), breadth: self.breadth, depth: self.depth)
+        opponent = Intelligence(color: self.color.next(), depth: self.depth)
     }
     
     public func makeMove() {
         self.initOpponent() //initialize virtual opponent
         opponent.initOpponent()
         if board.lastMoves.count == 0 {
-            board.put((9, 9))
+            let ctr = board.dimension / 2
+            board.put((ctr, ctr))
             return
         }
         if board.lastMoves.count == 1 {
@@ -72,7 +71,7 @@ class Intelligence {
             ]
             let index = Int(CGFloat.random(min: 0, max: CGFloat(offsets.count)))
             board.put(board.lastMoves[0] + offsets[index])
-        } else if self.breadth == 1 || depth == 0 {
+        } else if depth == -1 {
             board.put(self.getBalancedMove().co)
         }  else {
             //extrapolate best move
@@ -264,8 +263,8 @@ class Intelligence {
                                 }
                                 i = (begin + end) / 2
                             }
-                        }
-                        if movesCount == self.breadth {
+                        }//debug!!! 2 should be breadth
+                        if movesCount == 2 {
                             bestMoves.removeFirst()
                         }
                     }
@@ -407,7 +406,7 @@ class Intelligence {
                         i += 1
                     }
                     if gaps <= 1 {
-                        col += i - 1
+                        if same != 5 {col += i - 1}
                         interpret(leftBlocked, rightBlocked, i, same, gaps)
                     }
                 }
@@ -454,7 +453,7 @@ class Intelligence {
                         i += 1
                     }
                     if (gaps <= 1) {
-                        row += i - 1
+                        if same != 5 {row += i - 1}
                         interpret(topBlocked, bottomBlocked, i, same, gaps)
                     }
                 }
@@ -471,7 +470,7 @@ class Intelligence {
             while col <= board.dimension - 5 {
                 if let currentPiece = board.pieces[row][col], currentPiece == self.color {
                     let prevCo = Coordinate(col: col - 1, row: row - 1)
-                    var headBlocked: Bool = false //dummy initialization
+                    var headBlocked: Bool = false, repetitive = false //dummy initialization
                     if board.isValid(co: prevCo) {
                         if let prevPiece = board.pieces[prevCo.row][prevCo.col] {
                             if self.color == prevPiece {
@@ -483,8 +482,7 @@ class Intelligence {
                         } else {
                             let prev2Co = Coordinate(col: prevCo.col - 1, prevCo.row - 1)
                             if board.isValid(co: prev2Co) && board.pieces[prev2Co.row][prev2Co.col] == self.color {
-                                col += 1
-                                continue
+                                repetitive = true
                             }
                             headBlocked = false
                         }
@@ -513,7 +511,9 @@ class Intelligence {
                         i += 1
                     }
                     
-                    interpret(headBlocked, tailBlocked, i, same, gaps)
+                    if !repetitive || (same == 5 && gaps == 0) {
+                        interpret(headBlocked, tailBlocked, i, same, gaps)
+                    }
                 }
                 col += 1
             }
@@ -528,7 +528,7 @@ class Intelligence {
             while col >= 4 {
                 if let currentPiece = board.pieces[row][col], currentPiece == self.color {
                     let prevCo = Coordinate(col: col + 1, row: row - 1)
-                    var headBlocked: Bool = false //dummy initialization
+                    var headBlocked: Bool = false, repetitive = false // special case
                     if board.isValid(co: prevCo) {
                         if let prevPiece = board.pieces[prevCo.row][prevCo.col] {
                             if self.color == prevPiece {
@@ -540,8 +540,7 @@ class Intelligence {
                         } else {
                             let prev2Co = Coordinate(col: prevCo.col + 1, prevCo.row - 1)
                             if board.isValid(co: prev2Co) && board.pieces[prev2Co.row][prev2Co.col] == self.color {
-                                col -= 1
-                                continue
+                                repetitive = true
                             }
                             headBlocked = false
                         }
@@ -569,8 +568,9 @@ class Intelligence {
                         }
                         i += 1
                     }
-                    
-                    interpret(headBlocked, tailBlocked, i, same, gaps)
+                    if !repetitive || (same == 5 && gaps == 0) {
+                        interpret(headBlocked, tailBlocked, i, same, gaps)
+                    }
                 }
                 col -= 1
             }

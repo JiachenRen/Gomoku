@@ -75,7 +75,7 @@ public class Board: BoardProtocol, CustomStringConvertible {
     var coStack = [[(Coordinate, Bool)]]()
     var locked: Bool = false
     
-    var dummyIntelligence = Intelligence(color: .black, breadth: 0, depth: 0)
+    var dummyIntelligence = Intelligence(color: .black, depth: 0)
     
     let debugOn = false
     
