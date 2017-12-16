@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32001C821FE4BA2A00FB9613 /* Score.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32001C811FE4BA2A00FB9613 /* Score.swift */; };
+		32001C841FE4BD6800FB9613 /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32001C831FE4BD6800FB9613 /* Counter.swift */; };
 		325873F01FE073E100E8B61D /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325873EF1FE073E100E8B61D /* SettingsViewController.swift */; };
 		325873F21FE0758A00E8B61D /* IntelSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325873F11FE0758A00E8B61D /* IntelSettingsViewController.swift */; };
 		3260C9A21FDDEEF000C7DEBF /* ModelSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3260C9A11FDDEEF000C7DEBF /* ModelSelectionViewController.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32001C811FE4BA2A00FB9613 /* Score.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Score.swift; sourceTree = "<group>"; };
+		32001C831FE4BD6800FB9613 /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		325873EF1FE073E100E8B61D /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		325873F11FE0758A00E8B61D /* IntelSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntelSettingsViewController.swift; sourceTree = "<group>"; };
 		3260C9A11FDDEEF000C7DEBF /* ModelSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSelectionViewController.swift; sourceTree = "<group>"; };
@@ -75,6 +79,8 @@
 				32ABD54C1F3F35B3007F165B /* Intelligence.swift */,
 				325873F11FE0758A00E8B61D /* IntelSettingsViewController.swift */,
 				3260C9A31FDDFB6700C7DEBF /* IntelConfigViewController.swift */,
+				32001C811FE4BA2A00FB9613 /* Score.swift */,
+				32001C831FE4BD6800FB9613 /* Counter.swift */,
 			);
 			name = Intelligence;
 			sourceTree = "<group>";
@@ -202,9 +208,11 @@
 				3260C9A21FDDEEF000C7DEBF /* ModelSelectionViewController.swift in Sources */,
 				3299B4321F385EAA009AEF55 /* Utils.swift in Sources */,
 				3260C9A41FDDFB6700C7DEBF /* IntelConfigViewController.swift in Sources */,
+				32001C821FE4BA2A00FB9613 /* Score.swift in Sources */,
 				325873F21FE0758A00E8B61D /* IntelSettingsViewController.swift in Sources */,
 				3299B41D1F385D78009AEF55 /* BoardViewController.swift in Sources */,
 				3299B41B1F385D78009AEF55 /* AppDelegate.swift in Sources */,
+				32001C841FE4BD6800FB9613 /* Counter.swift in Sources */,
 				3299B4351F385F8D009AEF55 /* BoardView.swift in Sources */,
 				3260C9A81FDE172600C7DEBF /* MenuViewController.swift in Sources */,
 				3260C9A61FDE0EA600C7DEBF /* MenuIconView.swift in Sources */,

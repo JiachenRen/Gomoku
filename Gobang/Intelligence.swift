@@ -17,34 +17,16 @@ class Intelligence {
     typealias Move = (score: Int, co: Coordinate)
     let depth: Int
     
-    static let terminalMax = 100000
-    let TERMINAL_MAX = Intelligence.terminalMax
+    let TERMINAL_MAX = Score.MAX
     
-    //fives
-    var fives = 0
-    var pokedFives = 0
     
-    //fours
-    var blockedFour = 0
-    var freeFour = 0
-    var freePokedFour = 0
-    var blockedPokedFour = 0
-    
-    //threes
-    var blockedThree = 0
-    var freeThree = 0
-    var freePokedThree = 0
-    var blockedPokedThree = 0
-    
-    //twos
-    var freeTwo = 0
-    var blockedTwo = 0
-    
-    var freeOne = 0
     
     var bestMove: Move?
-    
     var opponent: Intelligence!
+    var counter = Counter()
+    
+    //debug section
+    var alphaCut = 0, betaCut = 0
     
     required init(color: Piece, depth: Int) {
         self.color = color
@@ -74,6 +56,7 @@ class Intelligence {
         } else if depth == -1 {
             board.put(self.getBalancedMove().co)
         }  else {
+            let curMillis = NSDate() //debug
             //extrapolate best move
             board.aiStatus = "extrapolating best move..."
             let _ = self.minimax(self.depth, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
@@ -90,6 +73,7 @@ class Intelligence {
             board.put(self.bestMove!.co)
             board.aiStatus = "waiting..."
             self.bestMove = nil
+            print(NSDate().timeIntervalSince(curMillis as Date)) //debug
         }
     }
     
@@ -111,13 +95,30 @@ class Intelligence {
         let selfScoreChange = self.linearEval() - opponent.linearEval() - staticEvalScoreSelf
         board.revert(notify: false)
         
-        if myBestMove.score >= Intelligence.terminalMax {
+        if myBestMove.score >= Score.MAX {
             board.aiStatus = "winning..."
             return myBestMove
         }
         board.aiStatus = oppoScoreChange > selfScoreChange ? "defending..." : "attacking..."
         
         return oppoScoreChange > selfScoreChange ? oppoBestMove : myBestMove
+    }
+    
+    func getSortedMoves() -> [Move] {
+        var bestMoves = [Move]()
+        for row in 0..<board.dimension {
+            for col in 0..<board.dimension {
+                if board.availableCos[row][col] {
+                    let co = Coordinate(col: col, row: row)
+                    board.place(co)
+                    let myScore = self.linearEval(), oppoScore = opponent.linearEval()
+                    let currentMove = Move(score: myScore - oppoScore, co)
+                    bestMoves.append(currentMove)
+                    board.revert(notify: false)
+                }
+            }
+        }
+        return board.turn == self.color ? bestMoves.sorted {$0.score > $1.score} : bestMoves.sorted {$0.score < $1.score}
     }
     
 //    function minimax(node, depth, maximizingPlayer)
@@ -152,80 +153,63 @@ class Intelligence {
         }
         
         if d == self.depth { //top level
-            for row in 0..<(board.dimension - 1) {
-                for col in 0..<(board.dimension - 1) {
-                    if board.availableCos[row][col] {
-                        let co = Coordinate(col: col, row: row)
-                        if self.bestMove == nil {
-                            bestMove = Move(score: -TERMINAL_MAX * 10, co)
-                        }
-//                        let curMillis = NSDate() //debug
-                        board.place(co)
-//                        print(NSDate().timeIntervalSince(curMillis as Date)) //debug
-                        let value = minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta)
-                        alpha = max(alpha, bestMove!.score)
-                        
-                        if value > bestMove!.score {
-                            bestMove = Move(score: value, co)
-                        }
-                        if self.linearEval() >= TERMINAL_MAX || bestMove!.score >= TERMINAL_MAX {
-                            self.bestMove = Move(score: TERMINAL_MAX, co)
-                            board.revert(notify: false)
-                            return TERMINAL_MAX
-                        }
-//                        let curMillis = NSDate() //debug
-                        board.revert(notify: false)
-//                        print(NSDate().timeIntervalSince(curMillis as Date))
-                    }
+            for (_, co) in getSortedMoves() {
+                if self.bestMove == nil {
+                    bestMove = Move(score: -TERMINAL_MAX * 10, co)
                 }
+                board.place(co)
+                let value = minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta)
+                alpha = max(alpha, bestMove!.score)
+                
+                if value > bestMove!.score {
+                    bestMove = Move(score: value, co)
+                }
+                if self.linearEval() >= TERMINAL_MAX || bestMove!.score >= TERMINAL_MAX {
+                    self.bestMove = Move(score: TERMINAL_MAX, co)
+                    board.revert(notify: false)
+                    return TERMINAL_MAX
+                }
+                board.revert(notify: false)
             }
+            
+            print("alpha cut: \(alphaCut)","beta cut: \(betaCut)")
             return bestMove!.score
         }
         
         if maximizingPlayer {
 //            print("max \(d)")
             var bestValue = -TERMINAL_MAX * 10
-            for row in 0..<(board.dimension - 1) {
-                for col in 0..<(board.dimension - 1) {
-                    if board.availableCos[row][col] {
-                        let co = Coordinate(col: col, row: row)
-                        board.place(co)
-                        bestValue = max(bestValue, minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta))
-                        alpha = max(alpha, bestValue)
-                        if bestValue >= TERMINAL_MAX {
-                            board.revert(notify: false)
-                            return TERMINAL_MAX
-                        }
-                        board.revert(notify: false)
-                        if beta <= alpha {
-                            print("alpha cut at depth \(d)")
-                            return alpha
-                        }
-                    }
+            for (_, co) in getSortedMoves() {
+                board.place(co)
+                bestValue = max(bestValue, minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta))
+                alpha = max(alpha, bestValue)
+                if bestValue >= TERMINAL_MAX {
+                    board.revert(notify: false)
+                    return TERMINAL_MAX
+                }
+                board.revert(notify: false)
+                if beta <= alpha {
+                    alphaCut += 1
+                    return alpha
                 }
             }
             return bestValue
         } else {
 //            print("min \(d)")
             var bestValue = TERMINAL_MAX * 10
-            for row in 0..<(board.dimension - 1) {
-                for col in 0..<(board.dimension - 1) {
-                    if board.availableCos[row][col] {
-                        let co = Coordinate(col: col, row: row)
-                        board.place(co)
-                        let value = minimax(d - 1, maximizingPlayer: true, alpha: alpha, beta: beta)
-                        bestValue = min(bestValue, value)
-                        beta = min(beta, bestValue)
-                        if bestValue <= -TERMINAL_MAX {
-                            board.revert(notify: false)
-                            return -TERMINAL_MAX
-                        }
-                        board.revert(notify: false)
-                        if beta <= alpha {
-                            print("beta cut at depth \(d)")
-                            return beta
-                        }
-                    }
+            for (_, co) in getSortedMoves() {
+                board.place(co)
+                let value = minimax(d - 1, maximizingPlayer: true, alpha: alpha, beta: beta)
+                bestValue = min(bestValue, value)
+                beta = min(beta, bestValue)
+                if bestValue <= -TERMINAL_MAX {
+                    board.revert(notify: false)
+                    return -TERMINAL_MAX
+                }
+                board.revert(notify: false)
+                if beta <= alpha {
+                    betaCut += 1
+                    return beta
                 }
             }
             return bestValue
@@ -241,7 +225,7 @@ class Intelligence {
                     board.place(co)
                     let myScore = self.linearEval(), oppoScore = opponent.linearEval()
                     
-                    var score: Int = 0, terminal = Intelligence.terminalMax
+                    var score: Int = 0, terminal = Score.MAX
                     if myScore >= terminal { //
                         return [Move(score: terminal, co)]
                     } else if oppoScore >= terminal {
@@ -289,99 +273,6 @@ class Intelligence {
         return bestMoves.reversed()
     }
     
-    private func clearCount() {
-        //fives
-        fives = 0
-        pokedFives = 0
-        
-        //fours
-        blockedFour = 0
-        freeFour = 0
-        freePokedFour = 0
-        blockedPokedFour = 0
-        
-        //threes
-        freeThree = 0
-        blockedPokedThree = 0
-        blockedThree = 0
-        freePokedThree = 0
-        
-        //twos
-        freeTwo = 0
-        blockedTwo = 0
-        
-        //ones
-        freeOne = 0
-    }
-    
-    func interpret(_ leftBlocked: Bool, _ rightBlocked: Bool, _ i: Int, _ same: Int, _ gaps: Int) {
-        if (leftBlocked && rightBlocked && i <= 4) { //no potential
-            return
-        }
-        switch gaps {
-        case 0:
-            switch same {
-            case 5: fives += 1
-            case 4:
-                if leftBlocked {
-                    if i >= 5  {
-                        blockedFour += 1
-                    }
-                } else if rightBlocked {
-                    if i >= 5  {
-                        freeFour += 1
-                    } else if i >= 4 {
-                        blockedFour += 1
-                    }
-                } else {
-                    freeFour += 1
-                }
-            case 3:
-                if leftBlocked {
-                    if i >= 4  {
-                        blockedThree += 1
-                    }
-                } else if rightBlocked {
-                    if i >= 4  {
-                        freeThree += 1
-                    } else if i >= 3 {
-                        blockedThree += 1
-                    }
-                } else {
-                    freeThree += 1
-                }
-            case 2: //debug
-                if leftBlocked || rightBlocked {
-                    blockedTwo += 1
-                } else {
-                    freeTwo += 1
-                }
-            case 1 where !leftBlocked && !rightBlocked: freeOne += 1
-            default: break
-            }
-        case 1:
-            switch same {
-            case 5: pokedFives += 1
-            case 4:
-                if leftBlocked || rightBlocked {
-                    blockedPokedFour += 1
-                } else {
-                    freePokedFour += 1
-                }
-            case 3:
-                if leftBlocked || rightBlocked {
-                    blockedPokedThree += 1
-                } else {
-                    freePokedThree += 1
-                }
-            default: break
-            }
-            
-        default: break
-        }
-    
-    }
-    
     private func horizontalInspection() {
         var row = 0
         while row < board.dimension {
@@ -422,7 +313,7 @@ class Intelligence {
 //                    print(NSDate().timeIntervalSince(curMillis as Date))
                     if gaps <= 1 {
                         if same != 5 {col += i - 1}
-                        interpret(leftBlocked, rightBlocked, i, same, gaps)
+                        counter.interpret(leftBlocked, rightBlocked, i, same, gaps)
                     }
                 }
                 col += 1
@@ -469,7 +360,7 @@ class Intelligence {
                     }
                     if (gaps <= 1) {
                         if same != 5 {row += i - 1}
-                        interpret(topBlocked, bottomBlocked, i, same, gaps)
+                        counter.interpret(topBlocked, bottomBlocked, i, same, gaps)
                     }
                 }
                 row += 1
@@ -527,7 +418,7 @@ class Intelligence {
                     }
                     
                     if !repetitive || (same == 5 && gaps == 0) {
-                        interpret(headBlocked, tailBlocked, i, same, gaps)
+                        counter.interpret(headBlocked, tailBlocked, i, same, gaps)
                     }
                 }
                 col += 1
@@ -584,7 +475,7 @@ class Intelligence {
                         i += 1
                     }
                     if !repetitive || (same == 5 && gaps == 0) {
-                        interpret(headBlocked, tailBlocked, i, same, gaps)
+                        counter.interpret(headBlocked, tailBlocked, i, same, gaps)
                     }
                 }
                 col -= 1
@@ -594,46 +485,43 @@ class Intelligence {
     }
     
     public func linearEval() -> Int {
-        self.clearCount() //reset scoring
+        counter = Counter() //reset scoring
+        
         self.horizontalInspection() //horizontal inspection
         self.verticalInspection() //vertical inspection
         self.diagnalInspectionULLR() //diagnal inspection upper left to lower right
         self.diagnalInspectionURLL() //diagnal inspection upper right to lower left
         
-        return fives * Intelligence.terminalMax
-        + self.freeFour * 10000
-        + self.freeThree * 1000
-        + self.freeTwo * 100
-        + self.freeOne * 10
+        return counter.fives * Score.MAX
+        + counter.freeFour * Score.FREE_FOUR
+        + counter.freeThree * Score.FREE_THREE
+        + counter.freeTwo * Score.FREE_TWO
+        + counter.freeOne * Score.FREE_ONE
         
-        + self.blockedFour * 1000
-        + self.blockedThree * 100
-        + self.blockedTwo * 10
+        + counter.blockedFour * Score.BLOCKED_FOUR
+        + counter.blockedThree * Score.BLOCKED_THREE
+        + counter.blockedTwo * Score.BLOCKED_TWO
             
-//        + self.pokedFives * 9000
-        
-        
-        + self.blockedPokedFour * 999
-        + self.freePokedFour * 1000
-        + self.freePokedThree * 999
-        + self.blockedPokedThree * 99
-        
+        + counter.blockedPokedFour * Score.BLOCKED_POKED_FOUR
+        + counter.freePokedFour * Score.BLOCKED_POKED_FOUR
+        + counter.freePokedThree * Score.FREE_POKED_THREE
+        + counter.blockedPokedThree * Score.BLOCKED_POKED_THREE
         
     }
     
     public func printDiagnosis() {
-        print("fives: \(fives)\n" +
-            "poked fives: \(pokedFives)\n" +
-            "blocked four: \(blockedFour)\n" +
-            "free poked four: \(freePokedFour)\n" +
-            "blocked poked four: \(blockedPokedFour)\n" +
-            "free four: \(freeFour)\n" +
-            "blocked three: \(blockedThree)\n" +
-            "free three: \(freeThree)\n" +
-            "blocked poked three: \(blockedPokedThree)\n" +
-            "free poked three: \(freePokedThree)\n" +
-            "blocked two: \(self.blockedTwo)\n" +
-            "free two: \(self.freeTwo)")
+        print("fives: \(counter.fives)\n" +
+            "poked fives: \(counter.pokedFives)\n" +
+            "blocked four: \(counter.blockedFour)\n" +
+            "free poked four: \(counter.freePokedFour)\n" +
+            "blocked poked four: \(counter.blockedPokedFour)\n" +
+            "free four: \(counter.freeFour)\n" +
+            "blocked three: \(counter.blockedThree)\n" +
+            "free three: \(counter.freeThree)\n" +
+            "blocked poked three: \(counter.blockedPokedThree)\n" +
+            "free poked three: \(counter.freePokedThree)\n" +
+            "blocked two: \(counter.blockedTwo)\n" +
+            "free two: \(counter.freeTwo)")
     }
     
     private func random() -> Coordinate {

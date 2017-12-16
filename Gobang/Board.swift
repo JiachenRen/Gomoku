@@ -146,10 +146,10 @@ public class Board: BoardProtocol, CustomStringConvertible {
         
         dummyIntelligence.color = .white
         let whiteScore = dummyIntelligence.linearEval()
-        if blackScore >= Intelligence.terminalMax {
+        if blackScore >= Score.MAX {
             self.locked = true
             delegate?.boardStatusUpdated(msg: "black wins!", data: findWinningCos())
-        } else if whiteScore >= Intelligence.terminalMax {
+        } else if whiteScore >= Score.MAX {
             self.locked = true
             delegate?.boardStatusUpdated(msg: "white wins!", data: findWinningCos())
         } else if blackScore == whiteScore {
