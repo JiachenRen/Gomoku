@@ -104,21 +104,23 @@ class Intelligence {
         return oppoScoreChange > selfScoreChange ? oppoBestMove : myBestMove
     }
     
+    ///evaluate each possible move and rank them according to their corresponding score.
     func getSortedMoves() -> [Move] {
         var bestMoves = [Move]()
+        let role = board.turn
         for row in 0..<board.dimension {
             for col in 0..<board.dimension {
                 if board.availableCos[row][col] {
                     let co = Coordinate(col: col, row: row)
                     board.place(co)
-                    let myScore = self.linearEval(), oppoScore = opponent.linearEval()
-                    let currentMove = Move(score: myScore - oppoScore, co)
+                    let score = Score.pointEvaluation(co: co, role: role)
+                    let currentMove = Move(score: score, co)
                     bestMoves.append(currentMove)
                     board.revert(notify: false)
                 }
             }
         }
-        return board.turn == self.color ? bestMoves.sorted {$0.score > $1.score} : bestMoves.sorted {$0.score < $1.score}
+        return bestMoves.sorted {$0.score > $1.score}
     }
     
 //    function minimax(node, depth, maximizingPlayer)
@@ -139,21 +141,21 @@ class Intelligence {
 //    14             bestValue := min(bestValue, v)
 //    15         return bestValue
     func minimax(_ d: Int, maximizingPlayer: Bool, alpha: Int, beta: Int) -> Int {
-//        let curMillis = NSDate() //debug
         var alpha = alpha, beta = beta
         let selfScore = self.linearEval(), opponentScore = opponent.linearEval()
-//        print(NSDate().timeIntervalSince(curMillis as Date)) //debug
         if selfScore >= TERMINAL_MAX && !maximizingPlayer {
             return TERMINAL_MAX
         } else if opponentScore >= TERMINAL_MAX && maximizingPlayer {
             return -TERMINAL_MAX
         }
+        
         if d == 0 { //bottom level
             return selfScore - opponentScore
         }
         
         if d == self.depth { //top level
             for (_, co) in getSortedMoves() {
+                
                 if self.bestMove == nil {
                     bestMove = Move(score: -TERMINAL_MAX * 10, co)
                 }
@@ -161,7 +163,9 @@ class Intelligence {
                 let value = minimax(d - 1, maximizingPlayer: false, alpha: alpha, beta: beta)
                 alpha = max(alpha, bestMove!.score)
                 
-                if value > bestMove!.score {
+                if value > bestMove!.score || value >= TERMINAL_MAX {
+                    print("best score updated: \(value)")
+                    board.aiStatus = "current best: \(value)"
                     bestMove = Move(score: value, co)
                 }
                 if self.linearEval() >= TERMINAL_MAX || bestMove!.score >= TERMINAL_MAX {
@@ -271,6 +275,24 @@ class Intelligence {
         }
         
         return bestMoves.reversed()
+    }
+    
+    func findMoves(for role: Piece, threshold: Int) -> [Move] {
+        var result = [Move]();
+        for i in 0..<board.dimension {
+            for j in 0..<board.dimension {
+                if board.availableCos[i][j] {
+                    let co = (row: i, col: j)
+                    board.place(co)
+                    let score = Score.pointEvaluation(co: co, role: role)
+                    board.revert(notify: false)
+                    if(score >= threshold) {
+                        result.append(Move(score: score, co))
+                    }
+                }
+            }
+        }
+        return result.sorted {$0.score > $1.score};
     }
     
     private func horizontalInspection() {
