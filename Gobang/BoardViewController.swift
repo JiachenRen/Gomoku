@@ -10,8 +10,19 @@ import UIKit
 
 class BoardViewController: UIViewController, BoardDelegate {
     
+    static var overlayLabelsVisible = false
+    
+    @IBOutlet var overlayLabels: [UILabel]!
+    
+    
     @IBOutlet weak var aiStatusLabel: UILabel!
     @IBOutlet weak var gameStatusLabel: UILabel!
+    
+    @IBOutlet weak var boardView: BoardView!
+    
+    var board: Board {
+        return Board.sharedInstance
+    }
     
     func aiStatusDidUpdate() {
         aiStatusLabel.text = board.aiStatus
@@ -28,7 +39,6 @@ class BoardViewController: UIViewController, BoardDelegate {
     @IBAction func restartButtonPressed(_ sender: UIBarButtonItem) {
         board.reset()
     }
-    
     
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
         let pos = sender.location(in: self.boardView)
@@ -56,19 +66,33 @@ class BoardViewController: UIViewController, BoardDelegate {
         
     }
     
-    @IBOutlet weak var boardView: BoardView!
-    
-    var board: Board {
-        return Board.sharedInstance
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         board.delegate = self
         
+        //retrieve board settings from user default
+        boardView.reloadBoardSettings()
+        
         //this is for fixing an extremely wierd bug
         board.place((col: 0, row: 0))
         board.revert(notify: true)
+        
+        //this is for fixing another extremely wierd bug... I did a poor job with this class...
+        
+        if board.lastMoves.count == 0 && board.intelligence != nil && board.turn == board.intelligence!.color {
+            board.intelligence!.makeMove()
+        }
+        
+        //manage the visibility of the labels
+        if let bool = retrieveFromUserDefualt(key: "overlayLabelsVisible") as? Bool {
+            BoardViewController.overlayLabelsVisible = bool
+        } else {
+            BoardViewController.overlayLabelsVisible = false
+            saveToUserDefault(obj: false, key: "overlayLabelsVisible")
+        }
+        overlayLabels.forEach {label in
+            label.isHidden = !BoardViewController.overlayLabelsVisible
+        }
         
         // Do any additional setup after loading the view, typically from a nib.
     }

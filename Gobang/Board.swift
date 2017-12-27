@@ -74,6 +74,7 @@ public class Board: BoardProtocol, CustomStringConvertible {
     var availableCos: [[Bool]]!
     var coStack = [[(Coordinate, Bool)]]()
     var locked: Bool = false
+    var displayDigits: Bool = false
     
     var dummyIntelligence = Intelligence(color: .black, depth: 0)
     
@@ -103,8 +104,23 @@ public class Board: BoardProtocol, CustomStringConvertible {
         clearBoardStatus()
     }
     
+    public func spawnPseudoPieces() {
+        self.initPieces()
+        for row in 0..<dimension {
+            for col in 0..<dimension {
+                switch Int(CGFloat.random(min: 0, max: 3)) {
+                case 0: pieces[row][col] = .black
+                case 1: pieces[row][col] = .white
+                default: break
+                }
+            }
+        }
+        
+    }
+    
     static var sharedInstance: Board = {
-        return Board(dimension: 19)
+        let retrieved = retrieveFromUserDefualt(key: "dimension")
+        return Board(dimension: retrieved == nil ? 19 : retrieved as! Int)
     }()
     
     required public init(dimension: Int) {

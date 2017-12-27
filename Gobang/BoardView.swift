@@ -40,6 +40,10 @@ public typealias Coordinate = (col: Int, row: Int)
         }
     }
     
+    var board: Board {
+        return Board.sharedInstance
+    }
+    
     var pieceRadius: CGFloat {
         return gap / 2 * pieceScale
     }
@@ -65,6 +69,60 @@ public typealias Coordinate = (col: Int, row: Int)
     
     var highlightedCoordinates: [Coordinate]?
     
+    func reloadBoardSettings() {
+        if retrieveFromUserDefualt(key: "boardAttrsInitialized") == nil {
+            saveToUserDefault(obj: board.dimension, key: "dimension")
+            saveToUserDefault(obj: Float(pieceScale), key: "radius")
+            saveToUserDefault(obj: Float(cornerOffset), key: "margin")
+            saveToUserDefault(obj: true, key: "boardAttrsInitialized")
+        }
+        cornerOffset = CGFloat(retrieveFromUserDefualt(key: "margin") as! Float)
+        pieceScale = CGFloat(retrieveFromUserDefualt(key: "radius") as! Float)
+        let updatedDim = retrieveFromUserDefualt(key: "dimension") as! Int
+        if board.dimension != updatedDim { //took me a while to find this bug
+            board.dimension = updatedDim
+            self.dimension = board.dimension
+        }
+        self.setNeedsDisplay()
+    }
+    
+    func highlightMostRecentPiece() {
+        if board.lastMoves.count == 0 {return}
+        let move = board.lastMoves[board.lastMoves.count - 1]
+        let pos = self.onScreen(move)
+        
+        //get the path for drawing a triangle and configers its graphics settings
+        let path = pathForPolygon(radius: pieceRadius / 1.5, sides: 3)
+        path.lineWidth = pieceRadius / 8
+        path.lineJoinStyle = .round
+        
+        //determine the highlight color according to the color of the piece
+        let color = board.pieces[move.row][move.col] == .black ? UIColor.red : UIColor.green
+        color.setStroke()
+        
+        //draw the triangle
+        context.saveGState()
+        context.translateBy(x: pos.x, y: pos.y)
+        context.rotate(by: -CGFloat.pi / 6)
+        path.stroke()
+        context.restoreGState()
+        
+    }
+    
+    private func pathForPolygon(radius: CGFloat, sides: Int) -> UIBezierPath {
+        let path = UIBezierPath()
+        let step = CGFloat.pi * 2 / CGFloat(sides)
+        path.move(to: Vec2D(x: cos(step), y: sin(step)).setMag(radius).cgPoint)
+        for i in 1...(sides-1) {
+            let angle = step * CGFloat(i + 1)
+            let pointer = Vec2D(x: cos(angle), y: sin(angle))
+                .setMag(radius).cgPoint
+            path.addLine(to: pointer)
+        }
+        path.close()
+        return path
+    }
+    
     override func draw(_ rect: CGRect) {
         //draws the background for the board
         boardColor.setFill()
@@ -73,6 +131,8 @@ public typealias Coordinate = (col: Int, row: Int)
         //draw the grid
         gridColor.setStroke()
         pathForGrid().stroke()
+//        let w = bounds.width - cornerOffset * 2
+//        context.stroke(CGRect(origin: CGPoint(x: cornerOffset, y: cornerOffset), size: CGSize(width: w, height: w)), width: 3)
         
         //draw the vertices, 19 for standard board
         if verticesVisible && dimension == 19 {
@@ -82,19 +142,27 @@ public typealias Coordinate = (col: Int, row: Int)
         //draw pieces
         drawPieces()
         
+        //display the digits overlay over the pieces according to the order in which they were placed onto the board
+        displayOverlayDigits()
+        
         //highlight selected pieces
         highlightPieces()
         
         //draw dummy piece to help place the piece
         drawDummyPiece()
+        
+        //highlight the piece that AI/Player just put down
+        highlightMostRecentPiece()
     }
     
     private func highlightPieces() {
-        if let coordinates = self.highlightedCoordinates {
+        if let coordinates = self.highlightedCoordinates, coordinates.count > 0 {
+            let co = coordinates[0]
+            let color = board.pieces[co.row][co.col] == .black ? UIColor.red : UIColor.green
+            color.setFill()
             coordinates.forEach { co in
-                UIColor.green.withAlphaComponent(1).setStroke()
                 context.setLineWidth(3)
-                context.strokeEllipse(in: CGRect(center: onScreen(co), size: CGSize(width: pieceRadius * 2, height: pieceRadius * 2)))
+                context.fillEllipse(in: CGRect(center: onScreen(co), size: CGSize(width: pieceRadius / 2, height: pieceRadius / 2)))
             }
         }
     }
@@ -144,14 +212,42 @@ public typealias Coordinate = (col: Int, row: Int)
             for col in 0..<pieces[row].count {
                 if let piece = pieces[row][col] {
                     switch piece {
-                    case .black: self.blackPieceColor.setFill()
-                    case .white: self.whitePieceColor.setFill()
+                    case .black:
+                        self.blackPieceColor.setFill()
+//                        self.whitePieceColor.setStroke()
+                    case .white:
+                        self.whitePieceColor.setFill()
+//                        self.blackPieceColor.setStroke()
                     }
-                    CGContext.fillCircle(center: onScreen((col, row)), radius: pieceRadius)
+                    let point = onScreen(Coordinate(col: col, row: row))
+                    CGContext.fillCircle(center: point, radius: pieceRadius)
+                    
+//                    context.setLineWidth(1)
+//                    let size = pieceRadius * 2
+//                    context.strokeEllipse(in: CGRect(center: point, size: CGSize(width: size, height: size)))
                 }
             }
         }
     }
+    
+    private func displayOverlayDigits() {
+        if !board.displayDigits {return}
+        for (num, piece) in board.lastMoves.enumerated() {
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.alignment = .center
+            
+            let attributes = [
+                NSAttributedStringKey.paragraphStyle  : paragraphStyle,
+                NSAttributedStringKey.font            : UIFont.systemFont(ofSize: pieceRadius),
+                NSAttributedStringKey.foregroundColor : board.pieces[piece.row][piece.col] == .black ? UIColor.white : UIColor.black,
+            ]
+            
+            let textRect = CGRect(center: onScreen(piece).translate(0, 0), size: CGSize(width: 50, height: pieceRadius))
+            let attrString = NSAttributedString(string: "\(num + 1)", attributes: attributes)
+            attrString.draw(in: textRect)
+        }
+    }
+    
     
     private func onScreen(_ coordinate: Coordinate) -> CGPoint {
         return CGPoint(
@@ -168,3 +264,5 @@ public typealias Coordinate = (col: Int, row: Int)
     }
 
 }
+
+
