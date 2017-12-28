@@ -97,7 +97,7 @@ public typealias Coordinate = (col: Int, row: Int)
         path.lineJoinStyle = .round
         
         //determine the highlight color according to the color of the piece
-        let color = board.pieces[move.row][move.col] == .black ? UIColor.red : UIColor.green
+        let color = board.pieces[move.row][move.col] == .black ? UIColor.green : UIColor.red
         color.setStroke()
         
         //draw the triangle
@@ -142,27 +142,29 @@ public typealias Coordinate = (col: Int, row: Int)
         //draw pieces
         drawPieces()
         
-        //display the digits overlay over the pieces according to the order in which they were placed onto the board
-        displayOverlayDigits()
-        
         //highlight selected pieces
         highlightPieces()
+        
+        //display the digits overlay over the pieces according to the order in which they were placed onto the board
+        displayOverlayDigits()
         
         //draw dummy piece to help place the piece
         drawDummyPiece()
         
         //highlight the piece that AI/Player just put down
-        highlightMostRecentPiece()
+        if !board.displayDigits {
+            highlightMostRecentPiece()
+        }
     }
     
     private func highlightPieces() {
         if let coordinates = self.highlightedCoordinates, coordinates.count > 0 {
             let co = coordinates[0]
-            let color = board.pieces[co.row][co.col] == .black ? UIColor.red : UIColor.green
-            color.setFill()
+            let color = board.pieces[co.row][co.col] == .black ? UIColor.green : UIColor.red
+            color.withAlphaComponent(1).setStroke()
             coordinates.forEach { co in
-                context.setLineWidth(3)
-                context.fillEllipse(in: CGRect(center: onScreen(co), size: CGSize(width: pieceRadius / 2, height: pieceRadius / 2)))
+                context.setLineWidth(pieceRadius / 8)
+                context.strokeEllipse(in: CGRect(center: onScreen(co), size: CGSize(width: pieceRadius * 2, height: pieceRadius * 2)))
             }
         }
     }
@@ -235,11 +237,11 @@ public typealias Coordinate = (col: Int, row: Int)
         for (num, piece) in board.lastMoves.enumerated() {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
-            
+            let isMostRecent = num == board.lastMoves.count - 1
             let attributes = [
                 NSAttributedStringKey.paragraphStyle  : paragraphStyle,
                 NSAttributedStringKey.font            : UIFont.systemFont(ofSize: pieceRadius),
-                NSAttributedStringKey.foregroundColor : board.pieces[piece.row][piece.col] == .black ? UIColor.white : UIColor.black,
+                NSAttributedStringKey.foregroundColor : board.pieces[piece.row][piece.col] == .black ? isMostRecent ? UIColor.green : UIColor.white : isMostRecent ? UIColor.red : UIColor.black,
             ]
             
             let textRect = CGRect(center: onScreen(piece).translate(0, 0), size: CGSize(width: 50, height: pieceRadius))
