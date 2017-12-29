@@ -108,6 +108,7 @@ class IntelConfigViewController: UIViewController {
             case .hard: boardVC.board.intelligence = Intelligence(color:
                 ruleSelected! == .aiFirst ? .black : .white, depth: 3)
             }
+            Board.sharedInstance.reset()
         }
     }
     

@@ -94,14 +94,15 @@ public class Board: BoardProtocol, CustomStringConvertible {
         reverted = [Coordinate]()
         lastMoves = [Coordinate]()
         turn = blackFirst ? .black : .white
+        self.locked = false
         if let intel = self.intelligence, intel.color == turn {
             intel.makeMove()
         } else {
             place((col: 0, row: 0))
             revert(notify: true)
         }
-        self.locked = false
         clearBoardStatus()
+        self.delegate?.boardDidUpdate()
     }
     
     public func spawnPseudoPieces() {
