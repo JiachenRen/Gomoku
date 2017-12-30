@@ -107,8 +107,14 @@ class Intelligence {
             self.bestMove = nil
             print(NSDate().timeIntervalSince(curMillis as Date)) //debug
         }
+        
+        //alfred
         if self.unpredictable {
-            self.depth = Int(CGFloat.random(min: 0, max: 3))
+            let seed = Int(CGFloat.random(min: 0, max: 4))
+            switch seed {
+            case 3: self.depth = 4
+            default: self.depth = seed
+            }
         }
     }
     
