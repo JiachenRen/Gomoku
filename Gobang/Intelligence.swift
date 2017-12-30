@@ -174,6 +174,7 @@ class Intelligence {
                 }
             }
         }
+        
         return bestMoves.sorted {$0.score > $1.score}
     }
     

@@ -37,7 +37,10 @@ class IntelConfigViewController: UIViewController {
             button.backgroundColor = orgBgrdColor
         }
         switch levelSelected! {
-        case .alfred: alfredButton.backgroundColor = highlightColor
+        case .alfred:
+            alfredButton.backgroundColor = highlightColor
+            //motion effects?
+//            alfredButton.titleLabel.motion
         case .hard: hardButton.backgroundColor = highlightColor
         case .medium: mediumButton.backgroundColor = highlightColor
         case .simple: simpleButton.backgroundColor = highlightColor
