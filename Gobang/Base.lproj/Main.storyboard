@@ -146,10 +146,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gCK-Qo-24m">
-                                <rect key="frame" x="20.666666666666657" y="183" width="372.66666666666674" height="140"/>
+                                <rect key="frame" x="20.666666666666657" y="133" width="372.66666666666674" height="240"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VjP-Hn-7hp">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QHd-A2-6Ct">
                                         <rect key="frame" x="0.0" y="0.0" width="372.66666666666669" height="40"/>
+                                        <color key="backgroundColor" red="0.14296875000000001" green="1" blue="0.3973688158" alpha="0.7496974032" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="Alfred">
+                                                    <attributes>
+                                                        <font key="NSFont" size="24" name="TrebuchetMS-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="levelButtonTouched:" destination="Rsk-p3-hVx" eventType="touchUpInside" id="sFn-ao-1Wp"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VjP-Hn-7hp">
+                                        <rect key="frame" x="0.0" y="50" width="372.66666666666669" height="40"/>
                                         <color key="backgroundColor" red="0.14296875000000001" green="1" blue="0.3973688158" alpha="0.74969740316901412" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal">
@@ -172,7 +195,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N98-Jo-rxS">
-                                        <rect key="frame" x="0.0" y="50" width="372.66666666666669" height="40"/>
+                                        <rect key="frame" x="0.0" y="100" width="372.66666666666669" height="40"/>
                                         <color key="backgroundColor" red="0.14296875000000001" green="1" blue="0.3973688158" alpha="0.74969740316901412" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal">
@@ -195,7 +218,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uHu-Ik-Io4">
-                                        <rect key="frame" x="0.0" y="100" width="372.66666666666669" height="40"/>
+                                        <rect key="frame" x="0.0" y="150" width="372.66666666666669" height="40"/>
                                         <color key="backgroundColor" red="0.14296875000000001" green="1" blue="0.3973688158" alpha="0.74969740316901412" colorSpace="calibratedRGB"/>
                                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal">
@@ -217,25 +240,45 @@
                                             <action selector="levelButtonTouched:" destination="Rsk-p3-hVx" eventType="touchUpInside" id="1Wn-9z-bDR"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uef-Wx-Q7a">
+                                        <rect key="frame" x="0.0" y="200" width="372.66666666666669" height="40"/>
+                                        <color key="backgroundColor" red="0.14296875000000001" green="1" blue="0.3973688158" alpha="0.7496974032" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <state key="normal">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="Balanced">
+                                                    <attributes>
+                                                        <font key="NSFont" size="24" name="TrebuchetMS-Bold"/>
+                                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="levelButtonTouched:" destination="Rsk-p3-hVx" eventType="touchUpInside" id="683-R2-NVp"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstItem="VjP-Hn-7hp" firstAttribute="top" secondItem="gCK-Qo-24m" secondAttribute="top" id="gqN-hf-gDW"/>
-                                </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AI Level" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eeK-7O-Rtn">
-                                <rect key="frame" x="0.0" y="150.33333333333334" width="414" height="23.333333333333343"/>
+                                <rect key="frame" x="0.0" y="100.33333333333333" width="414" height="23.333333333333329"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rule" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T8v-IM-MI2">
-                                <rect key="frame" x="0.0" y="363" width="414" height="23.333333333333314"/>
+                                <rect key="frame" x="0.0" y="413" width="414" height="23.333333333333314"/>
                                 <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Fku-Jr-Lds">
-                                <rect key="frame" x="20.666666666666657" y="396.33333333333331" width="372.66666666666674" height="189.99999999999994"/>
+                                <rect key="frame" x="20.666666666666657" y="446.33333333333326" width="372.66666666666674" height="190"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="782-gn-9AL">
                                         <rect key="frame" x="0.0" y="0.0" width="372.66666666666669" height="40"/>
@@ -284,7 +327,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmF-a9-v5J">
-                                        <rect key="frame" x="0.0" y="100" width="372.66666666666669" height="40"/>
+                                        <rect key="frame" x="0.0" y="100.00000000000006" width="372.66666666666669" height="40"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a4D-Ep-FCL">
                                         <rect key="frame" x="0.0" y="150.00000000000006" width="372.66666666666669" height="40"/>
@@ -316,11 +359,11 @@
                                 </constraints>
                             </stackView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cra-BH-fBF">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="150.33333333333334"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="100.33333333333333"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VYr-MM-urD">
-                                <rect key="frame" x="0.0" y="586.33333333333337" width="414" height="149.66666666666663"/>
+                                <rect key="frame" x="0.0" y="636.33333333333337" width="414" height="99.666666666666629"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -351,11 +394,18 @@
                     <navigationItem key="navigationItem" id="v27-yG-8He"/>
                     <connections>
                         <outlet property="aiFirstButton" destination="cKR-Lw-2uh" id="C6J-ko-6AZ"/>
+                        <outlet property="alfredButton" destination="QHd-A2-6Ct" id="v17-k4-8hR"/>
+                        <outlet property="balancedButton" destination="Uef-Wx-Q7a" id="s6n-fm-Nsy"/>
                         <outlet property="beginButton" destination="a4D-Ep-FCL" id="7xy-iV-JM6"/>
                         <outlet property="hardButton" destination="VjP-Hn-7hp" id="Kw8-1f-0Yq"/>
                         <outlet property="mediumButton" destination="N98-Jo-rxS" id="rfm-O8-r4H"/>
                         <outlet property="playerFirstButton" destination="782-gn-9AL" id="UhD-DD-6u8"/>
                         <outlet property="simpleButton" destination="uHu-Ik-Io4" id="EHe-D9-Rf9"/>
+                        <outletCollection property="aiLevelButtons" destination="QHd-A2-6Ct" collectionClass="NSMutableArray" id="DqC-Vp-cQ4"/>
+                        <outletCollection property="aiLevelButtons" destination="VjP-Hn-7hp" collectionClass="NSMutableArray" id="JGY-Lh-o1F"/>
+                        <outletCollection property="aiLevelButtons" destination="N98-Jo-rxS" collectionClass="NSMutableArray" id="Xu1-kr-EZR"/>
+                        <outletCollection property="aiLevelButtons" destination="uHu-Ik-Io4" collectionClass="NSMutableArray" id="tju-xT-3Yq"/>
+                        <outletCollection property="aiLevelButtons" destination="Uef-Wx-Q7a" collectionClass="NSMutableArray" id="0Ol-Xq-jVH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wsm-4d-Yht" userLabel="First Responder" sceneMemberID="firstResponder"/>

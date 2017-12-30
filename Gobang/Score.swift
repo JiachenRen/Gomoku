@@ -19,10 +19,10 @@ class Score {
     static let BLOCKED_THREE = 100
     static let BLOCKED_TWO = 10
 
-    static let BLOCKED_POKED_FOUR = 900
-    static let BLOCKED_POKED_THREE = 90
+    static let BLOCKED_POKED_FOUR = 989
+    static let BLOCKED_POKED_THREE = 99
     static let FREE_POKED_FOUR = 1000
-    static let FREE_POKED_THREE = 900
+    static let FREE_POKED_THREE = 999
     
     private static var board: Board {
         get {

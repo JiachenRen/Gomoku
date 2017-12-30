@@ -13,6 +13,11 @@ class IntelConfigViewController: UIViewController {
     @IBOutlet weak var hardButton: UIButton!
     @IBOutlet weak var mediumButton: UIButton!
     @IBOutlet weak var simpleButton: UIButton!
+    @IBOutlet weak var alfredButton: UIButton!
+    @IBOutlet weak var balancedButton: UIButton!
+    
+    @IBOutlet var aiLevelButtons: [UIButton]!
+    
     
     @IBOutlet weak var playerFirstButton: UIButton!
     @IBOutlet weak var aiFirstButton: UIButton!
@@ -23,24 +28,20 @@ class IntelConfigViewController: UIViewController {
     var orgBgrdColor: UIColor!
     
     @IBAction func levelButtonTouched(_ sender: UIButton) {
-        if self.levelSelected == nil && self.ruleSelected == nil {
-            self.orgBgrdColor = hardButton.backgroundColor
+        if levelSelected == nil && ruleSelected == nil {
+            orgBgrdColor = hardButton.backgroundColor
         }
-        self.levelSelected = Level(rawValue: sender.titleLabel!.text!)
-        print(self.levelSelected!.rawValue)
-        switch self.levelSelected! {
-        case .hard:
-            hardButton.backgroundColor = highlightColor
-            mediumButton.backgroundColor = orgBgrdColor
-            simpleButton.backgroundColor = orgBgrdColor
-        case .medium:
-            hardButton.backgroundColor = orgBgrdColor
-            mediumButton.backgroundColor = highlightColor
-            simpleButton.backgroundColor = orgBgrdColor
-        case .simple:
-            hardButton.backgroundColor = orgBgrdColor
-            mediumButton.backgroundColor = orgBgrdColor
-            simpleButton.backgroundColor = highlightColor
+        levelSelected = Level(rawValue: sender.titleLabel!.text!)
+        print(levelSelected!.rawValue)
+        aiLevelButtons.forEach {button in
+            button.backgroundColor = orgBgrdColor
+        }
+        switch levelSelected! {
+        case .alfred: alfredButton.backgroundColor = highlightColor
+        case .hard: hardButton.backgroundColor = highlightColor
+        case .medium: mediumButton.backgroundColor = highlightColor
+        case .simple: simpleButton.backgroundColor = highlightColor
+        case .balanced: balancedButton.backgroundColor = highlightColor
         }
         updateBeginButton()
     }
@@ -75,6 +76,8 @@ class IntelConfigViewController: UIViewController {
         case hard = "Hard"
         case medium = "Medium"
         case simple = "Simple"
+        case alfred = "Alfred"
+        case balanced = "Balanced"
     }
     
     enum Rule: String {
@@ -101,12 +104,19 @@ class IntelConfigViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let boardVC = segue.destination as? BoardViewController {
             switch levelSelected! {
+            case .alfred:
+                let intelligence = Intelligence(color:
+                    ruleSelected! == .aiFirst ? .black : .white, depth: 0)
+                intelligence.unpredictable = true
+                boardVC.board.intelligence = intelligence
             case .simple: boardVC.board.intelligence = Intelligence(color:
-                ruleSelected! == .aiFirst ? .black : .white, depth: -1)
+                ruleSelected! == .aiFirst ? .black : .white, depth: 1)
             case .medium: boardVC.board.intelligence = Intelligence(color:
                 ruleSelected! == .aiFirst ? .black : .white, depth: 2)
             case .hard: boardVC.board.intelligence = Intelligence(color:
-                ruleSelected! == .aiFirst ? .black : .white, depth: 3)
+                ruleSelected! == .aiFirst ? .black : .white, depth: 4)
+            case .balanced: boardVC.board.intelligence = Intelligence(color:
+                ruleSelected! == .aiFirst ? .black : .white, depth: 0)
             }
             Board.sharedInstance.reset()
         }

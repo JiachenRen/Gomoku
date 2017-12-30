@@ -15,7 +15,7 @@ class Intelligence {
         return Board.sharedInstance
     }
     typealias Move = (score: Int, co: Coordinate)
-    let depth: Int
+    var depth: Int
     
     let TERMINAL_MAX = Score.MAX
     
@@ -24,6 +24,7 @@ class Intelligence {
     var bestMove: Move?
     var opponent: Intelligence!
     var counter = Counter()
+    var unpredictable = false
     
     //debug section
     var alphaCut = 0, betaCut = 0
@@ -53,9 +54,40 @@ class Intelligence {
             ]
             let index = Int(CGFloat.random(min: 0, max: CGFloat(offsets.count)))
             board.put(board.lastMoves[0] + offsets[index])
-        } else if depth == -1 {
+        } else if depth == 0 {
             board.put(self.getBalancedMove().co)
-        }  else {
+        } else if depth == 1 {
+//            board.aiStatus = "eva"
+            self.depth = 2 //----------------------
+            self.opponent.depth = 2
+            let myScore = self.minimax(2, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
+            let myMove = self.bestMove
+            self.bestMove = nil
+            
+            board.turn = board.turn.next()
+            let oppoScore = opponent.minimax(2, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
+            let oppoMove = opponent.bestMove
+            opponent.bestMove = nil
+            board.turn = board.turn.next()
+            self.depth = 1 //----------------------
+            self.opponent.depth = 1
+            
+            if myScore > TERMINAL_MAX {
+                board.put(myMove!.co)
+            } else if oppoScore > TERMINAL_MAX {
+                board.put(oppoMove!.co)
+            }
+            
+            if myMove == nil {
+                board.put(oppoMove!.co)
+                return
+            } else if oppoMove == nil {
+                board.put(myMove!.co)
+                return
+            }
+            
+            board.put(myScore > oppoScore ? myMove!.co : oppoMove!.co)
+        } else {
             let curMillis = NSDate() //debug
             //extrapolate best move
             board.aiStatus = "extrapolating best move..."
@@ -74,6 +106,9 @@ class Intelligence {
             board.aiStatus = "waiting..."
             self.bestMove = nil
             print(NSDate().timeIntervalSince(curMillis as Date)) //debug
+        }
+        if self.unpredictable {
+            self.depth = Int(CGFloat.random(min: 0, max: 3))
         }
     }
     
