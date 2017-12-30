@@ -62,7 +62,9 @@ public class Board: BoardProtocol, CustomStringConvertible {
     
     var aiStatus: String = "pending..." {
         didSet {
-            delegate?.aiStatusDidUpdate()
+            DispatchQueue.main.async { [unowned self] in
+                self.delegate?.aiStatusDidUpdate()
+            }
         }
     }
     var delegate: BoardDelegate?

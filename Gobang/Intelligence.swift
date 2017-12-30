@@ -58,12 +58,14 @@ class Intelligence {
             board.put(self.getBalancedMove().co)
         } else if depth == 1 {
 //            board.aiStatus = "eva"
+            board.aiStatus = "evaluating offensive possibilities..."
             self.depth = 2 //----------------------
             self.opponent.depth = 2
             let myScore = self.minimax(2, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
             let myMove = self.bestMove
             self.bestMove = nil
             
+            board.aiStatus = "quantifying potential threats..."
             board.turn = board.turn.next()
             let oppoScore = opponent.minimax(2, maximizingPlayer: true, alpha: -TERMINAL_MAX * 10, beta: TERMINAL_MAX * 10)
             let oppoMove = opponent.bestMove
@@ -86,6 +88,7 @@ class Intelligence {
                 return
             }
             
+            board.aiStatus = "waiting..."
             board.put(myScore > oppoScore ? myMove!.co : oppoMove!.co)
         } else {
             let curMillis = NSDate() //debug
@@ -112,8 +115,17 @@ class Intelligence {
         if self.unpredictable {
             let seed = Int(CGFloat.random(min: 0, max: 4))
             switch seed {
-            case 3: self.depth = 4
-            default: self.depth = seed
+            case 3:
+                self.depth = 4
+                board.aiStatus = "your move is my command"
+            default:
+                self.depth = seed
+                switch depth {
+                case 0: board.aiStatus = "Alfred is distracted..."
+                case 1: board.aiStatus = "Alfred is meditating..."
+                case 2: board.aiStatus = "Alfred is thinking: \"ha ha ha\""
+                default: break
+                }
             }
         }
     }
@@ -122,6 +134,7 @@ class Intelligence {
         let staticEvalScoreSelf = self.linearEval() - opponent.linearEval()
         let staticEvalScoreOpponent = -staticEvalScoreSelf
         
+        board.aiStatus = "extrapolating..."
         board.turn = board.turn.next()
         let oppoBestMove = opponent.getBestMoves()[0]
         board.place(oppoBestMove.co)
