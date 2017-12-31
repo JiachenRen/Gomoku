@@ -39,7 +39,7 @@ class SettingsTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 2
+        return 3
     }
 
     @IBAction func doneButtonPressed(_ sender: UIBarButtonItem) {
@@ -61,6 +61,16 @@ class SettingsTableViewController: UITableViewController {
             let labelsVisible = BoardViewController.overlayLabelsVisible
             cell.toggleSwitch.isOn = labelsVisible
             cell.toggleClosure = {saveToUserDefault(obj: !labelsVisible, key: "overlayLabelsVisible")}
+            return cell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "toggleTableViewCell", for: indexPath) as! ToggleTableViewCell
+            cell.nameLabel.text = "Sound FX"
+            let isOn = Board.sharedInstance.soundFX
+            cell.toggleSwitch.isOn = isOn
+            cell.toggleClosure = {
+                saveToUserDefault(obj: !isOn, key: "overlayLabelsVisible")
+                Board.sharedInstance.soundFX = !isOn
+            }
             return cell
         default: break
         }
