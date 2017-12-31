@@ -21,7 +21,7 @@ class MenuViewController: UIViewController {
     
     @IBAction func showStepsButtonPressed(_ sender: UIButton) {
         board.displayDigits = !board.displayDigits
-        board.delegate?.boardDidUpdate()
+        board.delegate?.boardSettingsChanged()
         updateShowStepsButton()
         self.dismiss(animated: true, completion: nil)
     }
@@ -55,6 +55,7 @@ class MenuViewController: UIViewController {
     }
     
     @IBAction func mainMenuPressed(_ sender: UIButton) {
+        if board.aiIsThinking {return}
         Board.sharedInstance.intelligence = nil
         Board.sharedInstance.reset()
         performSegue(withIdentifier: "back.to.main", sender: nil)

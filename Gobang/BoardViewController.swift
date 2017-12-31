@@ -14,6 +14,7 @@ class BoardViewController: UIViewController, BoardDelegate {
     
     @IBOutlet var overlayLabels: [UILabel]!
     
+    @IBOutlet weak var pleaseWaitButton: UIButton!
     
     @IBOutlet weak var aiStatusLabel: UILabel!
     @IBOutlet weak var gameStatusLabel: UILabel!
@@ -24,20 +25,54 @@ class BoardViewController: UIViewController, BoardDelegate {
         return Board.sharedInstance
     }
     
+    func aiBrainActivity(thinking: Bool) {
+        DispatchQueue.main.async {[unowned self] in
+            self.boardView.isUserInteractionEnabled = !thinking
+        }
+    }
+    
+    func boardSettingsChanged() {
+        DispatchQueue.main.async {[unowned self] in
+            self.boardView.setNeedsDisplay()
+        }
+    }
+    
     func aiStatusDidUpdate() {
         aiStatusLabel.text = board.aiStatus
     }
     
     @IBAction func revertButtonPressed(_ sender: UIBarButtonItem) {
+        if board.aiIsThinking {
+            self.flashPleaseWait()
+            return
+        }
         board.revert(notify: true)
     }
 
     @IBAction func restoreButtonPressed(_ sender: UIButton) {
+        if board.aiIsThinking {
+            self.flashPleaseWait()
+            return
+        }
         board.restore()
     }
     
     @IBAction func restartButtonPressed(_ sender: UIBarButtonItem) {
+        if board.aiIsThinking {
+            self.flashPleaseWait()
+            return
+        }
         board.reset()
+    }
+    
+    private func flashPleaseWait() {
+        pleaseWaitButton.isHidden = false
+        UIView.animate(withDuration: 1.5, animations: {[unowned self] in
+            self.pleaseWaitButton.alpha = 0
+            }, completion: {_ in
+                self.pleaseWaitButton.alpha = 1.0
+                self.pleaseWaitButton.isHidden = true
+        })
     }
     
     @IBAction func handleTap(_ sender: UITapGestureRecognizer) {
@@ -80,7 +115,7 @@ class BoardViewController: UIViewController, BoardDelegate {
         //this is for fixing another extremely wierd bug... I did a poor job with this class...
         
         if board.lastMoves.count == 0 && board.intelligence != nil && board.turn == board.intelligence!.color {
-            board.intelligence!.makeMove()
+            try? board.intelligence!.makeMove()
         }
         
         //manage the visibility of the labels
@@ -103,8 +138,12 @@ class BoardViewController: UIViewController, BoardDelegate {
     }
     
     func boardDidUpdate() {
-        boardView.dimension = self.board.dimension
-        boardView.pieces = board.pieces
+        self.boardView.dimension = self.board.dimension
+        self.boardView.pieces = self.board.pieces
+        self.boardView.lastMoves = self.board.lastMoves
+        DispatchQueue.main.async {[unowned self] in
+            self.boardView.setNeedsDisplay()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -114,11 +153,13 @@ class BoardViewController: UIViewController, BoardDelegate {
     }
     
     func boardStatusUpdated(msg: String, data: Any?) {
-        gameStatusLabel.text = msg
-        if data != nil {
-            if let cos = data as? [Coordinate] {
-                boardView.highlightedCoordinates = cos
-                boardView.setNeedsDisplay()
+        DispatchQueue.main.async {[unowned self] in
+            self.gameStatusLabel.text = msg
+            if data != nil {
+                if let cos = data as? [Coordinate] {
+                    self.boardView.highlightedCoordinates = cos
+                    self.boardView.setNeedsDisplay()
+                }
             }
         }
     }

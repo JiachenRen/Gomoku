@@ -34,11 +34,10 @@ public typealias Coordinate = (col: Int, row: Int)
         }
     }
     
-    var pieces: [[Piece?]]? {
-        didSet {
-            self.setNeedsDisplay()
-        }
-    }
+    var pieces: [[Piece?]]?
+    
+    var lastMoves = [Coordinate]()
+    var highlightedCoordinates: [Coordinate]?
     
     var board: Board {
         return Board.sharedInstance
@@ -50,8 +49,9 @@ public typealias Coordinate = (col: Int, row: Int)
     
     var dimension: Int = 19 { //since the rows and cols of the board are always going to be the same.
         didSet {
-            //do stuff to update dimension of the view.
-            self.setNeedsDisplay()
+            DispatchQueue.main.async {[unowned self] in
+                self.setNeedsDisplay()
+            }
         }
     }
     
@@ -66,8 +66,6 @@ public typealias Coordinate = (col: Int, row: Int)
     var context: CGContext {
         return UIGraphicsGetCurrentContext()!
     }
-    
-    var highlightedCoordinates: [Coordinate]?
     
     func reloadBoardSettings() {
         if retrieveFromUserDefualt(key: "boardAttrsInitialized") == nil {
@@ -87,8 +85,8 @@ public typealias Coordinate = (col: Int, row: Int)
     }
     
     func highlightMostRecentPiece() {
-        if board.lastMoves.count == 0 {return}
-        let move = board.lastMoves[board.lastMoves.count - 1]
+        if self.lastMoves.count == 0 {return}
+        guard let move = self.lastMoves.last else {return}
         let pos = self.onScreen(move)
         
         //get the path for drawing a triangle and configers its graphics settings
@@ -234,10 +232,10 @@ public typealias Coordinate = (col: Int, row: Int)
     
     private func displayOverlayDigits() {
         if !board.displayDigits {return}
-        for (num, piece) in board.lastMoves.enumerated() {
+        for (num, piece) in self.lastMoves.enumerated() {
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.alignment = .center
-            let isMostRecent = num == board.lastMoves.count - 1
+            let isMostRecent = num == self.lastMoves.count - 1
             let attributes = [
                 NSAttributedStringKey.paragraphStyle  : paragraphStyle,
                 NSAttributedStringKey.font            : UIFont.systemFont(ofSize: pieceRadius),

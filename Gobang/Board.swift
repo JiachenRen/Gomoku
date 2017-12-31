@@ -55,7 +55,7 @@ public class Board: BoardProtocol, CustomStringConvertible {
         didSet {
             //give the AI the chance to make a move if it needs to move first.
             if let intel = intelligence, intel.color == self.turn {
-                intel.makeMove()
+                try? intel.makeMove()
             }
         }
     }
@@ -78,6 +78,8 @@ public class Board: BoardProtocol, CustomStringConvertible {
     var locked: Bool = false
     var displayDigits: Bool = false
     var soundFX: Bool = true
+    let aiBrainActivityQueue = DispatchQueue(label: "ai", attributes: .concurrent)
+    var aiIsThinking = false
     
     var dummyIntelligence = Intelligence(color: .black, depth: 0)
     
@@ -99,7 +101,7 @@ public class Board: BoardProtocol, CustomStringConvertible {
         turn = blackFirst ? .black : .white
         self.locked = false
         if let intel = self.intelligence, intel.color == turn {
-            intel.makeMove()
+            try? intel.makeMove()
         } else {
             place((col: 0, row: 0))
             revert(notify: true)
@@ -142,8 +144,9 @@ public class Board: BoardProtocol, CustomStringConvertible {
             self.updateAvailableCos(coordinate)
             lastMoves.append(coordinate)
             self.turn = turn.next()
-            delegate?.boardDidUpdate()
-            updateBoardStatus()
+            self.delegate?.boardDidUpdate()
+            self.updateBoardStatus()
+            
             if (debugOn) {
                 print(self, terminator: "\n")
                 print(self.availableSpacesMap)
@@ -152,9 +155,17 @@ public class Board: BoardProtocol, CustomStringConvertible {
             // give the AI the chance to make a move, if one exists.
             if let intel = intelligence, intel.color == self.turn {
                 self.aiStatus = "thinking..."
-                DispatchQueue.main.async {[unowned self] in
-                    intel.makeMove()
-                    self.updateBoardStatus()
+                aiBrainActivityQueue.async {[unowned self] in
+                    do {
+                        self.delegate?.aiBrainActivity(thinking: true)
+                        self.aiIsThinking = true
+                        try intel.makeMove()
+                        self.delegate?.aiBrainActivity(thinking: false)
+                        self.aiIsThinking = false
+                        self.updateBoardStatus()
+                    } catch {
+                    
+                    }
                 }
             }
             return
@@ -341,9 +352,11 @@ public enum Piece: Int {
 }
 
 protocol BoardDelegate {
-    func boardDidUpdate() -> Void
-    func aiStatusDidUpdate() -> Void
-    func boardStatusUpdated(msg: String, data: Any?) -> Void
+    func boardDidUpdate()
+    func aiStatusDidUpdate()
+    func aiBrainActivity(thinking: Bool)
+    func boardStatusUpdated(msg: String, data: Any?)
+    func boardSettingsChanged()
 }
 
 protocol BoardProtocol {

@@ -38,7 +38,7 @@ class Intelligence {
         opponent = Intelligence(color: self.color.next(), depth: self.depth)
     }
     
-    public func makeMove() {
+    public func makeMove() throws {
         self.initOpponent() //initialize virtual opponent
         opponent.initOpponent()
         if board.lastMoves.count == 0 {
