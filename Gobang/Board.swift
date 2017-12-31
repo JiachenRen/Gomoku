@@ -136,6 +136,7 @@ public class Board: BoardProtocol, CustomStringConvertible {
     public func put(_ coordinate: Coordinate) {
         if self.locked {return}
         guard let _ = pieces[coordinate.row][coordinate.col] else {
+            Sound.play(file: "move", fileExtension: "mp3", numberOfLoops: 1)
             pieces[coordinate.row][coordinate.col] = turn
             self.updateAvailableCos(coordinate)
             lastMoves.append(coordinate)
