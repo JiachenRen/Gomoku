@@ -128,9 +128,8 @@
 				325873F51FE0760500E8B61D /* Intelligence */,
 				325873F41FE075E500E8B61D /* Board */,
 				3260C9A71FDE172600C7DEBF /* MenuViewController.swift */,
-				325B61CA1FEAC909000191EA /* SettingsTableViewController.swift */,
-				325B61CC1FEACE47000191EA /* BoardDimViewController.swift */,
 				326D50B41FF28CA70040820C /* Table Cells */,
+				32D2210A1FF94B5900F6C918 /* Settings */,
 				3260C9A11FDDEEF000C7DEBF /* ModelSelectionViewController.swift */,
 				3260C9A51FDE0EA600C7DEBF /* MenuIconView.swift */,
 				3299B4241F385D78009AEF55 /* Assets.xcassets */,
@@ -151,6 +150,15 @@
 				325240F61FF8C0AA0062A561 /* Sound.swift */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		32D2210A1FF94B5900F6C918 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				325B61CC1FEACE47000191EA /* BoardDimViewController.swift */,
+				325B61CA1FEAC909000191EA /* SettingsTableViewController.swift */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
