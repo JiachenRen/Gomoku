@@ -1,4 +1,4 @@
-# Gobang-Swift
+# Gomoku AI Grandmaster
 An original gobang/gomoku ai implemented using swift.
 Compatible with ios.
 - You can find more info about it here: https://appadvice.com/app/gomoku-ai-grandmaster/1329748290
