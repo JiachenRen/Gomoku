@@ -1,4 +1,4 @@
-# Gomoku AI Grandmaster
+# Gomoku Swift
 ```
            _____      _____                     _                     _            
      /\   |_   _|    / ____|                   | |                   | |           
