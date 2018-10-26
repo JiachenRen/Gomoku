@@ -1,4 +1,4 @@
-# Gomoku Swift
+# Gomoku Grandmaster
 ```
            _____      _____                     _                     _            
      /\   |_   _|    / ____|                   | |                   | |           
